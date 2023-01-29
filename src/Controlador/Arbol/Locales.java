@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controlador.Arbol;
 
@@ -12,7 +11,7 @@ import Vista.frmPrincipal;
  *
  * @author Victor
  */
-public class Arbol {
+public class Locales {
 
     private NodoArbol raiz;
     private ListaEnlazada<ListaEnlazada<NodoArbol>> niveles;
@@ -20,7 +19,7 @@ public class Arbol {
     private Integer altura;
     private Integer nro_nodos;
 
-    public Arbol() {
+    public Locales() {
         raiz = null;
         altura = 0;
         nro_nodos = 0;
@@ -160,7 +159,7 @@ public class Arbol {
     }
 
     public static void main(String[] args) {
-        Arbol a = new Arbol();
+        Locales a = new Locales();
         
         try {
             a.insertar(56);
