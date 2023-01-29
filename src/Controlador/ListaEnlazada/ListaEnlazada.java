@@ -552,14 +552,14 @@ public class ListaEnlazada<E> {
     }
 
     public void imprimir() {
-        System.out.println("-------------------------LISTA ENLAZADA-------------------------");
+        System.out.println("------------------------- LISTA ENLAZADA -------------------------");
         NodoLista<E> aux = cabecera;
         while (aux != null) {
-            System.out.print(aux.getDato().toString() + "\n");
+            System.out.print(aux.getDato().toString() + "  ");
             aux = aux.getSiguiente();
         }
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("\n");
+        System.out.println("\n------------------------------------------------------------------");
+//        System.out.println("\n");
     }
 
     public NodoLista<E> getCabecera() {

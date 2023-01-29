@@ -170,14 +170,15 @@ public class Arbol {
             a.insertar(35);
             a.insertar(60);
             a.insertar(90);
+            a.insertar(1);
             System.out.println("Nro de nodos: " + a.getNro_nodos());
             System.out.println("Altura: " + a.getAltura());
             System.out.println("Niveles: "+a.getNiveles().getSize());
 //            new frmPrincipal(a).setVisible(true);
 //            a.getNiveles().obtener(1).imprimir();
-//            a.pre_orden().imprimir();
-//            a.post_orden().imprimir();
-//            a.in_orden().imprimir();
+            a.pre_orden().imprimir();
+            a.post_orden().imprimir();
+            a.in_orden().imprimir();
         } 
         catch (Exception e) {
         }
