@@ -5,13 +5,13 @@
 package Controlador.Arbol;
 
 import Controlador.ListaEnlazada.ListaEnlazada;
-import Vista.frmPrincipal;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Victor
  */
-public class Locales {
+public class ArbolBinario {
 
     private NodoArbol raiz;
     private ListaEnlazada<ListaEnlazada<NodoArbol>> niveles;
@@ -19,7 +19,7 @@ public class Locales {
     private Integer altura;
     private Integer nro_nodos;
 
-    public Locales() {
+    public ArbolBinario() {
         raiz = null;
         altura = 0;
         nro_nodos = 0;
@@ -116,6 +116,7 @@ public class Locales {
         }
     }
 
+    //pre orden
     public ListaEnlazada<NodoArbol> pre_orden() throws Exception {
         orden = new ListaEnlazada<>();
         pre_orden(raiz);
@@ -130,6 +131,7 @@ public class Locales {
         }
     }
 
+    //post orden
     public ListaEnlazada<NodoArbol> post_orden() throws Exception {
         orden = new ListaEnlazada<>();
         post_orden(raiz);
@@ -144,6 +146,7 @@ public class Locales {
         }
     }
 
+    //in orden
     public ListaEnlazada<NodoArbol> in_orden() throws Exception {
         orden = new ListaEnlazada<>();
         in_orden(raiz);
@@ -157,9 +160,111 @@ public class Locales {
             in_orden(arbol.getDerecha());
         }
     }
+    
+    //buscar arbol
+    public NodoArbol buscarNodo (int dato){
+        NodoArbol auxArbol = raiz;
+        while(auxArbol.getDato() != dato){
+            if(dato<auxArbol.getDato()){
+                auxArbol = auxArbol.getIzquierda();
+            }
+            else{
+                auxArbol = auxArbol.getDerecha();
+            }
+            if(auxArbol == null){
+                return null;
+            }
+        }
+        return auxArbol;
+    }
+    
+    //eliminar arbol
+    public boolean eliminar(int dato){
+        NodoArbol auxArbol = raiz;
+        NodoArbol padre = raiz;
+        boolean EsIzquierdo = true;
+        while(auxArbol.getDato() != dato){
+            padre = auxArbol;
+            if(dato < auxArbol.getDato()){
+                EsIzquierdo = true;
+                auxArbol = auxArbol.getIzquierda();
+            }
+            else{
+                EsIzquierdo = false;
+                auxArbol = auxArbol.getDerecha();
+            }
+            if(auxArbol==null){
+                return false;
+            }
+        }
+        if(auxArbol.getIzquierda() == null && auxArbol.getDerecha()==null){
+            if(auxArbol == raiz){
+                raiz = null;
+            }
+            else if(EsIzquierdo){
+                padre.setIzquierda(null);
+            }
+            else{
+                padre.setDerecha(null);
+            }
+        }
+        else if(auxArbol.getDerecha() == null){
+            if(auxArbol==raiz){
+                raiz=auxArbol.getIzquierda();
+            }
+            else if(EsIzquierdo){
+                padre.setIzquierda(auxArbol.getIzquierda());
+            }
+            else{
+                padre.setDerecha(auxArbol.getIzquierda());
+            }
+        }
+        else if(auxArbol.getIzquierda() == null){
+            if(auxArbol==raiz){
+                raiz=auxArbol.getDerecha();
+            }
+            else if(EsIzquierdo){
+                padre.setIzquierda(auxArbol.getDerecha());
+            }
+            else{
+                padre.setDerecha(auxArbol.getIzquierda());
+            }
+        }
+        else{
+            NodoArbol remplazo = obtenerNodoRemplazo(auxArbol);
+            if(auxArbol==raiz){
+                raiz=remplazo;
+            }
+            else if(EsIzquierdo){
+                padre.setIzquierda(remplazo);
+            }
+            else{
+                padre.setDerecha(remplazo);
+            }
+            remplazo.setIzquierda(auxArbol.getIzquierda());
+        }
+        return true;
+    }
+    
+    //devolver el remplazo
+    public NodoArbol obtenerNodoRemplazo(NodoArbol nodoRemplazo){
+        NodoArbol remplazarPadre = nodoRemplazo;
+        NodoArbol remplazo = nodoRemplazo;
+        NodoArbol auxiliar = nodoRemplazo.getDerecha();
+        while(auxiliar!=null){
+            remplazarPadre=remplazo;
+            remplazo = auxiliar;
+            auxiliar = auxiliar.getIzquierda();
+        }
+        if(remplazo != nodoRemplazo.getDerecha()){
+            remplazarPadre.setIzquierda(remplazo.getDerecha());
+            remplazo.setDerecha(nodoRemplazo.getDerecha());
+        }
+        return remplazo;
+    }
 
     public static void main(String[] args) {
-        Locales a = new Locales();
+        ArbolBinario a = new ArbolBinario();
         
         try {
             a.insertar(56);
@@ -178,8 +283,15 @@ public class Locales {
             a.pre_orden().imprimir();
             a.post_orden().imprimir();
             a.in_orden().imprimir();
+            int buscar = Integer.parseInt(JOptionPane.showInputDialog(null,"Nodo a buscar"));
+            System.out.println("Nodo buscar " + a.buscarNodo(buscar).toString());
+            int eliminar = Integer.parseInt(JOptionPane.showInputDialog(null,"Nodo a eliminar"));
+            System.out.println("Nodo eliminar "+a.eliminar(eliminar));
+            a.eliminar(eliminar);
+            a.in_orden().imprimir();
         } 
         catch (Exception e) {
+            
         }
     }
 

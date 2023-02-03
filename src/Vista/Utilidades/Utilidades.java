@@ -53,7 +53,7 @@ public class Utilidades {
         Gson gson = new Gson();
         String json = gson.toJson(arbol);
         
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("dataJSON.json"))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("listaLocales.json"))){
             bw.write(json);
             return true;
         } 
@@ -69,7 +69,7 @@ public class Utilidades {
         Gson gson = new Gson();
         
         try {
-            BufferedReader br = new BufferedReader(new FileReader("dataJSON.json"));
+            BufferedReader br = new BufferedReader(new FileReader("listaLocales.json"));
             String linea = "";
             while((linea = br.readLine()) != null){
                 json += linea;

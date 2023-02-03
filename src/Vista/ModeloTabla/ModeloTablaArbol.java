@@ -25,16 +25,15 @@ public class ModeloTablaArbol extends AbstractTableModel{
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 3;
     }
     
     @Override
     public String getColumnName(int column){
         switch(column){
             case 0: return "ID";
-            case 1: return "Nombre";
-            case 2: return "Nombre Cientifico";
-            case 3: return "Descripcion";
+            case 1: return "Nombre Local";
+            case 2: return "Descripcion";
             default:return null;
         }
     }
@@ -51,9 +50,8 @@ public class ModeloTablaArbol extends AbstractTableModel{
         
         switch(columnIndex){
             case 0: return rowIndex+1;
-            case 1: return local.getNombre();
+            case 1: return local.getNombreLocal();
             case 2: return local.getDescripcion();
-            case 3: return local.getNombreLocal();
             default:return null;
         }
     }

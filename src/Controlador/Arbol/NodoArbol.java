@@ -16,9 +16,9 @@ public class NodoArbol {
 
     public NodoArbol(Integer dato) {
         this.dato = dato;
-        padre = null;
-        izquierda = null;
-        derecha = null;
+        this.padre = null;
+        this.izquierda = null;
+        this.derecha = null;
     }
     
     public NodoArbol getPadre() {

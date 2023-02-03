@@ -5,7 +5,7 @@
 package Vista.ModeloTabla;
 
 import javax.swing.table.AbstractTableModel;
-import Controlador.Arbol.Locales;
+import Controlador.Arbol.ArbolBinario;
 
 /**
  *
@@ -13,7 +13,7 @@ import Controlador.Arbol.Locales;
  */
 public class ModeloTablaArbolBinario extends AbstractTableModel {
 
-    private Locales locales;
+    private ArbolBinario locales;
 
     @Override
     public int getRowCount() {
@@ -50,11 +50,11 @@ public class ModeloTablaArbolBinario extends AbstractTableModel {
         return "";
     }
 
-    public Locales getLocales() {
+    public ArbolBinario getLocales() {
         return locales;
     }
 
-    public void setLocales(Locales locales) {
+    public void setLocales(ArbolBinario locales) {
         this.locales = locales;
     }
     

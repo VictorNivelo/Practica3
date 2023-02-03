@@ -12,6 +12,7 @@ import Modelo.Locales;
  * @author Victor
  */
 public class LocalController {
+    
     private ListaEnlazada<Locales> locales = new ListaEnlazada<>();
 
     public ListaEnlazada<Locales> getLocales() {

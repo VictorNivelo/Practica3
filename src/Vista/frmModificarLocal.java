@@ -155,6 +155,11 @@ public class frmModificarLocal extends javax.swing.JFrame {
         jLabel1.setText("MODIFICAR LOCAL");
 
         btnModificarLocal.setText("MODIFICAR LOCAL");
+        btnModificarLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarLocalActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setText("REGRESAR");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
@@ -218,6 +223,11 @@ public class frmModificarLocal extends javax.swing.JFrame {
         abrir.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnModificarLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarLocalActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnModificarLocalActionPerformed
 
     /**
      * @param args the command line arguments

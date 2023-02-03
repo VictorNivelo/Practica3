@@ -4,11 +4,29 @@
  */
 package Vista;
 
+import Controlador.ListaEnlazada.ListaEnlazada;
+import Controlador.LocalController;
+import Controlador.PosicionController;
+import Modelo.Enum.Orientacion;
+import Modelo.Locales;
+import Modelo.Posicion;
+import Vista.Utilidades.Utilidades;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Victor
  */
 public class frmAgregarLocal extends javax.swing.JFrame {
+    LocalController localC = new LocalController();
+    PosicionController PosicionC = new PosicionController();
+    public LinkedList<Locales> listaLocales = new LinkedList<>();
 
     /**
      * Creates new form frmAgregarLocal
@@ -32,16 +50,16 @@ public class frmAgregarLocal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtLongitud = new javax.swing.JTextField();
+        txtLatitud = new javax.swing.JTextField();
+        cbxOrientacion = new javax.swing.JComboBox<>();
         btnAgregarLocal = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
 
@@ -61,9 +79,9 @@ public class frmAgregarLocal extends javax.swing.JFrame {
 
         jLabel3.setText("Descipcion:");
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDescripcion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -79,8 +97,8 @@ public class frmAgregarLocal extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2))))
+                            .addComponent(txtDescripcion)
+                            .addComponent(txtNombre))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -91,11 +109,11 @@ public class frmAgregarLocal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -111,9 +129,12 @@ public class frmAgregarLocal extends javax.swing.JFrame {
 
         jLabel9.setText("Orientacion");
 
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtLongitud.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtLatitud.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        cbxOrientacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NORTE", "SUR", "ESTE", "OESTE", "SURESTE", "NORESTE", "SUROESTE", "NOROESTE" }));
+        cbxOrientacion.setSelectedItem(null);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -130,9 +151,9 @@ public class frmAgregarLocal extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField5)
-                            .addComponent(jComboBox1, 0, 228, Short.MAX_VALUE))
+                            .addComponent(txtLongitud)
+                            .addComponent(txtLatitud)
+                            .addComponent(cbxOrientacion, 0, 228, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
@@ -142,19 +163,24 @@ public class frmAgregarLocal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLatitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLongitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxOrientacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 9, Short.MAX_VALUE))
         );
 
         btnAgregarLocal.setText("AGREGAR LOCAL");
+        btnAgregarLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarLocalActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setText("REGRESAR");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
@@ -187,9 +213,9 @@ public class frmAgregarLocal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,6 +233,86 @@ public class frmAgregarLocal extends javax.swing.JFrame {
         abrir.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnAgregarLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLocalActionPerformed
+        // TODO add your handling code here:
+//        double latitud = Double.parseDouble(txtLatitud.getText());
+//        double longitud = Double.parseDouble(txtLatitud.getText());
+//        
+//        Gson gson = new Gson();
+//        
+//        ListaEnlazada<Posicion> listaPosiciones = new ListaEnlazada<>();
+//        Posicion posucion = new Posicion();
+//        listaPosiciones.insertar(posucion);
+//        
+//        System.out.println(""+listaPosiciones);
+
+//        Locales local = new Locales();
+//        local.setNombreLocal(txtNombre.getText());
+//        local.setDescripcion(txtDescripcion.getText());
+//        local.setId(localC.getLocales().getSize() + 1);
+//        
+//        Posicion posi = new Posicion();
+//
+//        posi.setLatitud(Double.valueOf(txtLatitud.getText()));
+//        posi.setLongitud(Double.valueOf(txtLongitud.getText()));
+//        posi.setOrientacion(cbxOrientacion.getSelectedItem().toString());
+//        
+//
+//        
+//        localC.getLocales().insertar(local);
+//        PosicionC.getPosiciones().insertar(posi);
+//        
+//        Utilidades.guardarArchivoJSON(localC);
+//        Utilidades.guardarPosiciones(PosicionC);
+//        
+//        
+//        System.out.println(""+local+" "+posi);
+
+    String NombreLocal = txtNombre.getText();
+    String DescipcionLocal = txtDescripcion.getText();
+    
+    String LatitudLocal = txtLatitud.getText();
+    String LongitudLocal = txtLongitud.getText();
+    String OrientacionLocal = cbxOrientacion.getSelectedItem().toString();
+    
+    int i = 0;
+
+    if(txtNombre.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null, "Por favor llene el nombre", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
+    }
+    else if(txtDescripcion.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null, "Por favor llene la descripcion", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
+    }
+    else if(txtLatitud.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null, "Por favor llene la latitud", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
+    }
+    else if(txtLongitud.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null, "Por favor llene la longitud", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
+    }
+    else if(cbxOrientacion.getSelectedItem() == null){
+        JOptionPane.showMessageDialog(null, "Por favor seleccione la orientacion", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
+    }
+    else{
+        Locales locallist = new Locales(i++, NombreLocal, DescipcionLocal, LatitudLocal, LongitudLocal, OrientacionLocal);
+        listaLocales.add(locallist);
+        
+        Gson guardarGson = new Gson();
+        
+        String json = guardarGson.toJson(listaLocales);
+        
+        try (FileWriter writer = new FileWriter("ListaLocales.json")) {
+            guardarGson.toJson(listaLocales, writer);
+            System.out.println("Se ha guardado correctamente");
+            JOptionPane.showMessageDialog(null, "Guardado correctamente", "GUARDADO", JOptionPane.INFORMATION_MESSAGE);
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    }//GEN-LAST:event_btnAgregarLocalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,7 +352,7 @@ public class frmAgregarLocal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarLocal;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cbxOrientacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -257,9 +363,9 @@ public class frmAgregarLocal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtLatitud;
+    private javax.swing.JTextField txtLongitud;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,10 +12,14 @@ import Modelo.Enum.Orientacion;
  * @author Victor
  */
 public class Posicion {
+    
     private Integer local;
+    
     private Double latitud;
     private Double longitud;
-    private Orientacion orientacion;
+    
+    private String orientacion;
+
 
     public Integer getLocal() {
         return local;
@@ -41,11 +45,11 @@ public class Posicion {
         this.longitud = longitud;
     }
 
-    public Orientacion getOrientacion() {
+    public String getOrientacion() {
         return orientacion;
     }
 
-    public void setOrientacion(Orientacion orientacion) {
+    public void setOrientacion(String orientacion) {
         this.orientacion = orientacion;
     }
     
