@@ -4,6 +4,8 @@
  */
 package Controlador.Arbol;
 
+import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
+import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
 import javax.swing.JOptionPane;
 
@@ -43,7 +45,7 @@ public class ArbolBinario {
                 if (valor.intValue() == actual.getDato()) {
                     return false;
                 } 
-                else if (valor.intValue() < actual.getDato()) {
+                else if (valor < actual.getDato()) {
                     actual = actual.getIzquierda();
                     if (actual == null) {
                         nuevo.setPadre(padre);
@@ -95,7 +97,7 @@ public class ArbolBinario {
         try {
             niveles.eliminar(niveles.getSize() - 1);
         } 
-        catch (Exception e) {
+        catch (ListaVaciaExcepcion | PosicionNoEncontradaException e) {
             System.out.println(e);
         }
     }
@@ -275,19 +277,20 @@ public class ArbolBinario {
             a.insertar(60);
             a.insertar(90);
             a.insertar(1);
+            
             System.out.println("Nro de nodos: " + a.getNro_nodos());
             System.out.println("Altura: " + a.getAltura());
             System.out.println("Niveles: "+a.getNiveles().getSize());
 //            new frmPrincipal(a).setVisible(true);
 //            a.getNiveles().obtener(1).imprimir();
-            a.pre_orden().imprimir();
-            a.post_orden().imprimir();
+//            a.pre_orden().imprimir();
+//            a.post_orden().imprimir();
             a.in_orden().imprimir();
-            int buscar = Integer.parseInt(JOptionPane.showInputDialog(null,"Nodo a buscar"));
-            System.out.println("Nodo buscar " + a.buscarNodo(buscar).toString());
+//            int buscar = Integer.parseInt(JOptionPane.showInputDialog(null,"Nodo a buscar"));
+//            System.out.println("Nodo buscar " + a.buscarNodo(buscar).toString());
             int eliminar = Integer.parseInt(JOptionPane.showInputDialog(null,"Nodo a eliminar"));
-            System.out.println("Nodo eliminar "+a.eliminar(eliminar));
             a.eliminar(eliminar);
+            
             a.in_orden().imprimir();
         } 
         catch (Exception e) {

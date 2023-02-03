@@ -4,6 +4,9 @@
  */
 package Controlador.Grafo;
 
+import Controlador.Grafo.Exception.VerticeOfSizeException;
+import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
+import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
 import java.lang.reflect.Array;
 import java.util.HashMap;
@@ -15,17 +18,19 @@ import java.util.HashMap;
 public class GrafoDirigidoEtiquetado<E> extends GrafoDirigido{
     protected E etiquetas[];
     protected HashMap<E, Integer> dicVertices;
-    private Class<E> clazz;
-    
-    public GrafoDirigidoEtiquetado(Integer numVertices, Class clazz){
+
+    public GrafoDirigidoEtiquetado(Integer numVertices){
         super(numVertices);
-        this.clazz = clazz;
-        etiquetas = (E[]) Array.newInstance(clazz, numVertices+1);
+        etiquetas = (E[]) new Object[numVertices+1];
         dicVertices = new HashMap(numVertices);
     }
     
     public Boolean existeAristaEtiquetada(E origen, E destino)throws Exception{
         return this.existeArista(obtenerCodigoE(origen), obtenerCodigoE(destino));
+    }
+    
+    public Double pesoArista(E origen, E destino){
+        return pesoArista(obtenerCodigoE(origen), obtenerCodigoE(destino));
     }
     
     public void insertarAristaEtiquetada(E origen, E destino, Double peso) throws Exception{
@@ -41,7 +46,14 @@ public class GrafoDirigidoEtiquetado<E> extends GrafoDirigido{
     }
     
     private Integer obtenerCodigoE(E etiqueta){
-        return dicVertices.get(etiqueta);
+        int codigo;
+        try{
+            codigo=dicVertices.get(etiqueta);
+        }
+        catch(Exception e){
+            codigo = -1;
+        }
+        return codigo;
     }
     
     public E obtenerEtiqueta(Integer codigo){
@@ -55,25 +67,27 @@ public class GrafoDirigidoEtiquetado<E> extends GrafoDirigido{
     
     @Override
     public String toString() {
-        StringBuffer grafo = new StringBuffer("");
+        StringBuffer cadenaGrafo = new StringBuffer("");
         try {
             for (int i = 1; i <= numVertices(); i++) {
-                grafo.append("Vertice " + String.valueOf(i) +" ("+obtenerEtiqueta(i)+")");
+                cadenaGrafo.append("Vertice ").append(String.valueOf(i)).append(" (").append(obtenerEtiqueta(i)).append(")");
                 ListaEnlazada<Adyacencia> lista = adyacentes(i);
                 for (int j = 0; j < lista.getSize(); j++) {
                     Adyacencia a = lista.obtener(j);
                     if (a.getPeso().toString().equalsIgnoreCase(String.valueOf(Double.NaN))) {
-                        grafo.append("-- vertice etiquetado destino: " + obtenerEtiqueta(a.getDestino()) + " -- SP");
-                    } else {
-                        grafo.append("-- vertice destino: " + obtenerEtiqueta(a.getDestino()) + " -- Peso: " + a.getPeso());
+                        cadenaGrafo.append("-- vertice etiquetado destino: ").append(obtenerEtiqueta(a.getDestino())).append(" -- SP");
+                    } 
+                    else {
+                        cadenaGrafo.append("-- vertice destino: ").append(obtenerEtiqueta(a.getDestino())).append(" -- Peso: ").append(a.getPeso());
                     }
                 }
-                grafo.append("\n");
+                cadenaGrafo.append("\n");
             }
-        } catch (Exception e) {
-            grafo.append(e.getMessage());
+        } 
+        catch (ListaVaciaExcepcion | PosicionNoEncontradaException e) {
+            cadenaGrafo.append(e.getMessage());
         }
-        return grafo.toString();
+        return cadenaGrafo.toString();
     }
     
 }

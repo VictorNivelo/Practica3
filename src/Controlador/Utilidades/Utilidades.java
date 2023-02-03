@@ -20,15 +20,15 @@ import java.lang.reflect.Field;
  */
 public class Utilidades {
     public static Boolean isNumber(Class clase){
-        return clase.getSuperclass().getSimpleName().equalsIgnoreCase("Number");
+        return clase.getSuperclass().getSimpleName().equalsIgnoreCase("Numero");
     }
     
     public static Boolean isString(Class clase){
-        return clase.getSimpleName().equalsIgnoreCase("String");
+        return clase.getSimpleName().equalsIgnoreCase("Cadena");
     }
     
     public static Boolean isCharacter(Class clase){
-        return clase.getSimpleName().equalsIgnoreCase("Character");
+        return clase.getSimpleName().equalsIgnoreCase("Caracter");
     }
     
     public static Boolean isBoolean(Class clase){
@@ -36,7 +36,7 @@ public class Utilidades {
     }
     
     public static Boolean isDate(Class clase){
-        return clase.getSimpleName().equalsIgnoreCase("Date");
+        return clase.getSimpleName().equalsIgnoreCase("Fecha");
     }
     
     public static Boolean isPrimitive(Class clase){

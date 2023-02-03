@@ -19,12 +19,12 @@ public class GrafoNoDirigido extends GrafoDirigido{
 
     @Override
     public void insertarArista(Integer origen, Integer destino, Double peso) throws Exception {
-        if (origen.intValue() <= numVertices && destino.intValue() <= numVertices) {
+        if (origen <= numVertices && destino <= numVertices) {
             if (!existeArista(origen, destino)) {
-                numAristas++;
                 listaAdyacente[origen].insertar(new Adyacencia(destino, peso));
                 listaAdyacente[destino].insertar(new Adyacencia(origen, peso));
             }
+            numAristas++;
         } 
         else {
             throw new VerticeOfSizeException();

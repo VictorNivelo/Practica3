@@ -4,6 +4,8 @@
  */
 package Controlador.Grafo;
 
+import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
+import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
 
 /**
@@ -32,26 +34,27 @@ public abstract class Grafo {
 
     @Override
     public String toString() {
-        StringBuffer grafo = new StringBuffer("");
+        StringBuffer cadenaGrafo = new StringBuffer("");
         try {
             for (int i = 1; i <= numVertices(); i++) {
-                grafo.append("Vertice " + String.valueOf(i));
+                cadenaGrafo.append("Vertice ").append(String.valueOf(i));
                 ListaEnlazada<Adyacencia> lista = adyacentes(i);
                 for (int j = 0; j < lista.getSize(); j++) {
 
                     Adyacencia a = lista.obtener(j);
                     if (a.getPeso().toString().equalsIgnoreCase(String.valueOf(Double.NaN))) {
-                        grafo.append("-- vertice destino: " + a.getDestino() + " -- SP");
+                        cadenaGrafo.append("-- vertice destino: ").append(a.getDestino()).append(" -- SP");
                     } else {
-                        grafo.append("-- vertice destino: " + a.getDestino() + " -- Peso: " + a.getPeso());
+                        cadenaGrafo.append("-- vertice destino: ").append(a.getDestino()).append(" -- Peso: ").append(a.getPeso());
                     }
                 }
-                grafo.append("\n");
+                cadenaGrafo.append("\n");
             }
-        } catch (Exception e) {
-            grafo.append(e.getMessage());
+        } 
+        catch (ListaVaciaExcepcion | PosicionNoEncontradaException e) {
+            cadenaGrafo.append(e.getMessage());
         }
-        return grafo.toString();
+        return cadenaGrafo.toString();
     }
     
     public ListaEnlazada caminoMinimo(Integer origen, Integer destino) throws Exception{

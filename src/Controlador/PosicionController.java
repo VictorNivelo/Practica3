@@ -5,6 +5,8 @@
 package Controlador;
 
 import Controlador.Grafo.GrafoNoDirigidoEtiquetado;
+import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
+import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
 import Controlador.Utilidades.Utilidades;
 import Modelo.Locales;
@@ -22,13 +24,14 @@ public class PosicionController {
     private ListaEnlazada<Posicion> posiciones = new ListaEnlazada<>();
 
     public void crearGrafoLista() {
-        grafo = new GrafoNoDirigidoEtiquetado<>(posiciones.getSize(), Posicion.class);
+        grafo = new GrafoNoDirigidoEtiquetado<>(posiciones.getSize());
         for (int i = 1; i <= posiciones.getSize(); i++) {
             try {
                 grafo.etiquetar(i, posiciones.obtener(i - 1));
 
             } 
-            catch (Exception e) {
+            catch (ListaVaciaExcepcion | PosicionNoEncontradaException e) {
+                
             }
         }
     }

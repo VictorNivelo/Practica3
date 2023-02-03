@@ -20,7 +20,7 @@ public class GrafoDirigido extends Grafo{
         this.numVertices = numVertices;
         numAristas = 0;
         listaAdyacente = new ListaEnlazada[numVertices+1];
-        for(int i = 0; i <= this.numVertices; i++){
+        for(int i = 1; i <= this.numVertices; i++){
             listaAdyacente[i] = new ListaEnlazada<>();
         }
     }
@@ -38,7 +38,7 @@ public class GrafoDirigido extends Grafo{
     @Override
     public Boolean existeArista(Integer origen, Integer destino) throws Exception {
         Boolean existe = false;
-        if(origen.intValue() <= numVertices && destino.intValue() <= numVertices){
+        if(origen <= numVertices && destino <= numVertices){
             ListaEnlazada<Adyacencia> lista = listaAdyacente[origen];
             for(int i = 0; i < lista.getSize(); i++){
                 Adyacencia a = lista.obtener(i);
@@ -48,15 +48,16 @@ public class GrafoDirigido extends Grafo{
                 }
             }
             
-        }else{
+        }
+        else{
             throw new VerticeOfSizeException();
         }
         return existe;
     }
 
-    @Override //Hay algo que no está bien pipipipi
+    @Override 
     public Double pesoArista(Integer origen, Integer destino) {
-        Double peso = Double.NaN; //Not a Number xd (valor por defecto)
+        Double peso = Double.NaN;
         try {
             if(existeArista(origen, destino)){
                 ListaEnlazada<Adyacencia> adyacentes = listaAdyacente[origen];
@@ -68,7 +69,9 @@ public class GrafoDirigido extends Grafo{
                     }
                 }
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
+            
         }
         return peso;
     }
@@ -81,15 +84,17 @@ public class GrafoDirigido extends Grafo{
     @Override
     public void insertarArista(Integer origen, Integer destino, Double peso) throws Exception{
         try {
-            if(origen.intValue() <= numVertices && destino.intValue() <= numVertices){
+            if(origen <= numVertices && destino <= numVertices){
                 if(!existeArista(origen, destino)){
-                    numAristas++;
                     listaAdyacente[origen].insertar(new Adyacencia(destino, peso));
+                    numAristas++;
                 }
-            }else{
+            }
+            else{
                 throw new VerticeOfSizeException();
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             System.out.println("Error: "+e);
         }
     }
@@ -98,7 +103,5 @@ public class GrafoDirigido extends Grafo{
     public ListaEnlazada<Adyacencia> adyacentes(Integer vertice) {
         return listaAdyacente[vertice];
     }
-    
-    
     
 }

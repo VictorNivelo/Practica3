@@ -13,18 +13,18 @@ import Controlador.Grafo.Exception.VerticeOfSizeException;
 
 public class GrafoNoDirigidoEtiquetado<E> extends GrafoDirigidoEtiquetado<E>{
     
-    public GrafoNoDirigidoEtiquetado(Integer numVertices, Class clazz) {
-        super(numVertices, clazz);
+    public GrafoNoDirigidoEtiquetado(Integer numVertices) {
+        super(numVertices);
     }
     
     @Override
     public void insertarArista(Integer origen, Integer destino, Double peso) throws Exception {
-        if (origen.intValue() <= numVertices && destino.intValue() <= numVertices) {
+        if (origen <= numVertices && destino <= numVertices) {
             if (!existeArista(origen, destino)) {
-                numAristas++;
                 listaAdyacente[origen].insertar(new Adyacencia(destino, peso));
                 listaAdyacente[destino].insertar(new Adyacencia(origen, peso));
             }
+            numAristas++;
         } 
         else {
             throw new VerticeOfSizeException();
