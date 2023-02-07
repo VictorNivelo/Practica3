@@ -290,8 +290,8 @@ public class ArbolBinario {
 //            System.out.println("Nodo buscar " + a.buscarNodo(buscar).toString());
             int eliminar = Integer.parseInt(JOptionPane.showInputDialog(null,"Nodo a eliminar"));
             a.eliminar(eliminar);
-            
             a.in_orden().imprimir();
+            
         } 
         catch (Exception e) {
             

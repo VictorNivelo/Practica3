@@ -24,7 +24,7 @@ public class GrafoNoDirigidoEtiquetado<E> extends GrafoDirigidoEtiquetado<E>{
                 listaAdyacente[origen].insertar(new Adyacencia(destino, peso));
                 listaAdyacente[destino].insertar(new Adyacencia(origen, peso));
             }
-            numAristas++;
+//            numAristas++;
         } 
         else {
             throw new VerticeOfSizeException();

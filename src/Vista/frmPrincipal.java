@@ -4,9 +4,27 @@
  */
 package Vista;
 
+import Controlador.Grafo.Adyacencia;
+import Controlador.Grafo.Grafo;
+import Controlador.Grafo.GrafoDirigidoEtiquetado;
+import Controlador.Grafo.GrafoNoDirigido;
+import Controlador.Grafo.GrafoNoDirigidoEtiquetado;
+import Controlador.ListaEnlazada.ListaEnlazada;
 import Controlador.LocalController;
 import Controlador.PosicionController;
 import Vista.ModeloTabla.ModeloTablaArbol;
+import Vista.Utilidades.Utilidades;
+import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxFastOrganicLayout;
+import com.mxgraph.layout.mxIGraphLayout;
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.swing.util.mxMorphing;
+import com.mxgraph.util.mxEvent;
+import com.mxgraph.util.mxEventObject;
+import com.mxgraph.util.mxEventSource;
+import com.mxgraph.view.mxGraph;
+import java.awt.Dimension;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -14,7 +32,8 @@ import Vista.ModeloTabla.ModeloTablaArbol;
  * @author Victor
  */
 public class frmPrincipal extends javax.swing.JFrame {
-    
+    PosicionController pc = new PosicionController();
+    Grafo grafo;
 
     /**
      * Creates new form frmPrincipal
@@ -22,9 +41,15 @@ public class frmPrincipal extends javax.swing.JFrame {
     public frmPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
+        cargarCombo();
     }
-
+    
+    
+    
+    public void cargarCombo(){
+        Utilidades.cargarComboPosiciones(cbxOrigen, pc);
+        Utilidades.cargarComboPosiciones(cbxDestino, pc);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,10 +86,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         cbxOrigen = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         cbxDestino = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnRecorridoDijstra = new javax.swing.JButton();
+        btnRecorridoFloyd = new javax.swing.JButton();
+        btnAgregarATabla = new javax.swing.JButton();
+        btnMostrarGrafos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -220,14 +245,14 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jLabel9.setText("Destino:");
 
-        jButton1.setText("RECORRIDO DIJKSTRA");
+        btnRecorridoDijstra.setText("RECORRIDO DIJKSTRA");
 
-        jButton2.setText("RECORRIDO FLOYD");
+        btnRecorridoFloyd.setText("RECORRIDO FLOYD");
 
-        jButton4.setText("AGREGAR A LA TABLA");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarATabla.setText("AGREGAR A LA TABLA");
+        btnAgregarATabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnAgregarATablaActionPerformed(evt);
             }
         });
 
@@ -249,11 +274,11 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addComponent(btnAgregarATabla)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(btnRecorridoFloyd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(btnRecorridoDijstra)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -271,13 +296,18 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton4))
+                    .addComponent(btnRecorridoDijstra)
+                    .addComponent(btnRecorridoFloyd)
+                    .addComponent(btnAgregarATabla))
                 .addContainerGap())
         );
 
-        jButton3.setText("MOSTRAR GRAFOS");
+        btnMostrarGrafos.setText("MOSTRAR GRAFOS");
+        btnMostrarGrafos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarGrafosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -294,7 +324,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminarLocal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(btnMostrarGrafos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSalir))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -317,13 +347,13 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrearLocal)
                     .addComponent(btnEditarLocal)
                     .addComponent(btnEliminarLocal)
                     .addComponent(btnSalir)
-                    .addComponent(jButton3))
+                    .addComponent(btnMostrarGrafos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -368,10 +398,47 @@ public class frmPrincipal extends javax.swing.JFrame {
         txtDescripcionLocal.setText( tblListaLocales.getValueAt(seleccionar, 1).toString());
     }//GEN-LAST:event_tblListaLocalesMouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnAgregarATablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarATablaActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnAgregarATablaActionPerformed
+
+    private void btnMostrarGrafosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarGrafosActionPerformed
+        // TODO add your handling code here:
+        
+        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7);
+        
+//        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7);
+        grafoDirigiodoEtiquetado.etiquetarVertice(1, "1a");
+        grafoDirigiodoEtiquetado.etiquetarVertice(2, "2a");
+        grafoDirigiodoEtiquetado.etiquetarVertice(3, "3a");
+        grafoDirigiodoEtiquetado.etiquetarVertice(4, "4a");
+        grafoDirigiodoEtiquetado.etiquetarVertice(5, "5a");
+        grafoDirigiodoEtiquetado.etiquetarVertice(6, "6a");
+        grafoDirigiodoEtiquetado.etiquetarVertice(7, "7a");
+       
+        try {
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(2), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(2), grafoDirigiodoEtiquetado.obtenerEtiqueta(3), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(4), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(4), grafoDirigiodoEtiquetado.obtenerEtiqueta(5), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(5), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(2), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(7), 30.0);
+//            gde.insertarAristaE(gde.obtenerEtiqueta(1), gde.obtenerEtiqueta(4), 1000.0);
+            //System.out.println(gde.caminiMinimo(1, 4));
+            grafoDirigiodoEtiquetado.caminoMinimo(6, 3).imprimir();
+//            grafoDirigiodoEtiquetado.caminoMinimo(3, 7).imprimir();
+//            gde.DijkstracaminoMinimo(1).imprimir();
+            //System.out.println(gde.toString());
+            //new UbicacionController().listar().imprimir();
+        } 
+        catch (Exception e) {
+            
+        }
+
+    
+    }//GEN-LAST:event_btnMostrarGrafosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -409,16 +476,16 @@ public class frmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarATabla;
     private javax.swing.JButton btnCrearLocal;
     private javax.swing.JButton btnEditarLocal;
     private javax.swing.JButton btnEliminarLocal;
+    private javax.swing.JButton btnMostrarGrafos;
+    private javax.swing.JButton btnRecorridoDijstra;
+    private javax.swing.JButton btnRecorridoFloyd;
     private javax.swing.JButton btnSalir;
     public static javax.swing.JComboBox<String> cbxDestino;
     public static javax.swing.JComboBox<String> cbxOrigen;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

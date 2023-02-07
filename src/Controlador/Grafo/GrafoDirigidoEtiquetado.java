@@ -8,7 +8,6 @@ import Controlador.Grafo.Exception.VerticeOfSizeException;
 import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
 import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
-import java.lang.reflect.Array;
 import java.util.HashMap;
 
 /**
@@ -64,6 +63,24 @@ public class GrafoDirigidoEtiquetado<E> extends GrafoDirigido{
         etiquetas[codigo] = etiqueta;
         dicVertices.put(etiqueta, codigo);
     }
+    
+    public void etiquetarVertice(Integer codigo, E etiqueta) {
+        etiquetas[codigo] = etiqueta;
+        dicVertices.put(etiqueta, codigo);
+    }
+    
+    public Boolean existeAristaE(E o, E d) throws Exception {
+        return this.existeArista(obtenerCodigoE(o), obtenerCodigoE(d));        
+    }
+    
+    public void insertarAristaE(E o, E d, Double peso) throws Exception {
+        insertarArista(obtenerCodigoE(o), obtenerCodigoE(d), peso);
+    }
+    
+    public void insertarAristaE(E o, E d) throws Exception {
+        insertarArista(obtenerCodigoE(o), obtenerCodigoE(d));
+    }
+    
     
     @Override
     public String toString() {
