@@ -15,46 +15,26 @@ public class Locales {
 
     private String nombreLocal;
     private String descripcion;
+    private String distancia;
     
     private ListaEnlazada<Posicion> posicion;
     
-    private String latitud;
-    private String longitud;
-    private String Orientacion;
 
-    public Locales(Integer id, String nombreLocal, String descripcion, String latitud, String longitud, String Orientacion) {
+    public Locales(Integer id, String nombreLocal, String descripcion, String distancia) {
         this.id = id;
         this.nombreLocal = nombreLocal;
         this.descripcion = descripcion;
-        this.latitud = latitud;
-        this.longitud = longitud;
-        this.Orientacion = Orientacion;
+        this.distancia = distancia;
     }
 
-    public String getLatitud() {
-        return latitud;
+    public String getDistancia() {
+        return distancia;
     }
 
-    public void setLatitud(String latitud) {
-        this.latitud = latitud;
+    public void setDistancia(String distancia) {
+        this.distancia = distancia;
     }
-
-    public String getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(String longitud) {
-        this.longitud = longitud;
-    }
-
-    public String getOrientacion() {
-        return Orientacion;
-    }
-
-    public void setOrientacion(String Orientacion) {
-        this.Orientacion = Orientacion;
-    } 
-
+    
     public Integer getId() {
         return id;
     }
@@ -89,7 +69,7 @@ public class Locales {
 
     @Override
     public String toString() {
-        return "id=" + id + ", nombreLocal=" + nombreLocal + ", descripcion=" + descripcion + ", posicion=" + posicion;
+        return "id=" + id + ", nombreLocal=" + nombreLocal + ", descripcion=" + descripcion + ", distancia=" + distancia;
     }
   
 }

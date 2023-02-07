@@ -6,25 +6,12 @@ package Vista;
 
 import Controlador.Grafo.Adyacencia;
 import Controlador.Grafo.Grafo;
-import Controlador.Grafo.GrafoDirigidoEtiquetado;
-import Controlador.Grafo.GrafoNoDirigido;
 import Controlador.Grafo.GrafoNoDirigidoEtiquetado;
-import Controlador.ListaEnlazada.ListaEnlazada;
-import Controlador.LocalController;
 import Controlador.PosicionController;
-import Vista.ModeloTabla.ModeloTablaArbol;
-import Vista.Utilidades.Utilidades;
-import com.mxgraph.layout.mxCircleLayout;
-import com.mxgraph.layout.mxFastOrganicLayout;
-import com.mxgraph.layout.mxIGraphLayout;
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.swing.util.mxMorphing;
-import com.mxgraph.util.mxEvent;
-import com.mxgraph.util.mxEventObject;
-import com.mxgraph.util.mxEventSource;
-import com.mxgraph.view.mxGraph;
-import java.awt.Dimension;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import vista.FrmGrafo;
 
 
 /**
@@ -34,6 +21,7 @@ import javax.swing.JOptionPane;
 public class frmPrincipal extends javax.swing.JFrame {
     PosicionController pc = new PosicionController();
     Grafo grafo;
+    private static JFrame frmModificarLocal;
 
     /**
      * Creates new form frmPrincipal
@@ -41,15 +29,18 @@ public class frmPrincipal extends javax.swing.JFrame {
     public frmPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        cargarCombo();
+        
+        DefaultTableModel model = (DefaultTableModel) tblListaLocales.getModel();
+
+        Object[] rowData = {"Valor 1", "Valor 2", "Valor 3"};
+
+        model.addColumn("1");
+        model.addColumn("2");
+        model.addColumn("3");
+        model.addRow(rowData);
+        
     }
     
-    
-    
-    public void cargarCombo(){
-        Utilidades.cargarComboPosiciones(cbxOrigen, pc);
-        Utilidades.cargarComboPosiciones(cbxDestino, pc);
-    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,25 +61,16 @@ public class frmPrincipal extends javax.swing.JFrame {
         txtNombreLocal = new javax.swing.JTextField();
         txtDescripcionLocal = new javax.swing.JTextField();
         txtPosicion = new javax.swing.JTextField();
+        btnCrearLocal = new javax.swing.JButton();
+        btnEditarLocal = new javax.swing.JButton();
+        btnEliminarLocal = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblListaLocales = new javax.swing.JTable();
-        btnEditarLocal = new javax.swing.JButton();
-        btnCrearLocal = new javax.swing.JButton();
-        btnEliminarLocal = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jLabel8 = new javax.swing.JLabel();
-        cbxOrigen = new javax.swing.JComboBox<>();
-        jLabel9 = new javax.swing.JLabel();
-        cbxDestino = new javax.swing.JComboBox<>();
         btnRecorridoDijstra = new javax.swing.JButton();
         btnRecorridoFloyd = new javax.swing.JButton();
-        btnAgregarATabla = new javax.swing.JButton();
         btnMostrarGrafos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,7 +81,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("INFORMACION DE LOCALES");
 
@@ -121,44 +103,74 @@ public class frmPrincipal extends javax.swing.JFrame {
         txtPosicion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPosicion.setFocusable(false);
 
+        btnCrearLocal.setText("CREAR LOCAL");
+        btnCrearLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearLocalActionPerformed(evt);
+            }
+        });
+
+        btnEditarLocal.setText("EDITAR LOCAL");
+        btnEditarLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarLocalActionPerformed(evt);
+            }
+        });
+
+        btnEliminarLocal.setText("ELIMINAR LOCAL");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPosicion)
+                                    .addComponent(txtDescripcionLocal, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtNombreLocal, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnCrearLocal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPosicion)
-                            .addComponent(txtDescripcionLocal, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtNombreLocal, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap())
+                        .addComponent(btnEditarLocal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminarLocal)
+                        .addGap(0, 3, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNombreLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtDescripcionLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearLocal)
+                    .addComponent(btnEditarLocal)
+                    .addComponent(btnEliminarLocal))
+                .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -189,35 +201,19 @@ public class frmPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-
-        btnEditarLocal.setText("EDITAR LOCAL");
-        btnEditarLocal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarLocalActionPerformed(evt);
-            }
-        });
-
-        btnCrearLocal.setText("CREAR LOCAL");
-        btnCrearLocal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCrearLocalActionPerformed(evt);
-            }
-        });
-
-        btnEliminarLocal.setText("ELIMINAR LOCAL");
 
         btnSalir.setText("SALIR");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -226,81 +222,9 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("PRESENTACION DE LOS LOCALES");
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
-
-        jLabel8.setText("Origen:");
-
-        jLabel9.setText("Destino:");
-
         btnRecorridoDijstra.setText("RECORRIDO DIJKSTRA");
 
         btnRecorridoFloyd.setText("RECORRIDO FLOYD");
-
-        btnAgregarATabla.setText("AGREGAR A LA TABLA");
-        btnAgregarATabla.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarATablaActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxDestino, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnAgregarATabla)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRecorridoFloyd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRecorridoDijstra)))
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(cbxOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRecorridoDijstra)
-                    .addComponent(btnRecorridoFloyd)
-                    .addComponent(btnAgregarATabla))
-                .addContainerGap())
-        );
 
         btnMostrarGrafos.setText("MOSTRAR GRAFOS");
         btnMostrarGrafos.addActionListener(new java.awt.event.ActionListener() {
@@ -317,22 +241,20 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnCrearLocal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditarLocal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminarLocal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMostrarGrafos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalir))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnSalir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnMostrarGrafos))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnRecorridoFloyd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                                .addComponent(btnRecorridoDijstra))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -342,19 +264,15 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrearLocal)
-                    .addComponent(btnEditarLocal)
-                    .addComponent(btnEliminarLocal)
                     .addComponent(btnSalir)
-                    .addComponent(btnMostrarGrafos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(btnRecorridoDijstra)
+                    .addComponent(btnRecorridoFloyd)
+                    .addComponent(btnMostrarGrafos))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -379,10 +297,26 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearLocalActionPerformed
 
     private void btnEditarLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLocalActionPerformed
-        // TODO add your handling code here:
-        frmModificarLocal abrir = new frmModificarLocal();
-        abrir.setVisible(true);
-        this.setVisible(false);
+        
+        
+        if(tblListaLocales.getSelectedRowCount() != 1){
+            JOptionPane.showMessageDialog(null, "Seleccione un local para editar", "NO SELECCIONADO", JOptionPane.WARNING_MESSAGE);
+
+        }else{
+            
+            if (frmModificarLocal == null) {
+                frmModificarLocal = new frmModificarLocal();
+                frmModificarLocal.setVisible(true);
+                
+            } 
+            else {
+                frmModificarLocal.toFront();
+            }
+            
+//            abrir.setVisible(true);
+//            this.setVisible(false);
+        }
+
     }//GEN-LAST:event_btnEditarLocalActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -396,26 +330,21 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         txtNombreLocal.setText( tblListaLocales.getValueAt(seleccionar, 0).toString());
         txtDescripcionLocal.setText( tblListaLocales.getValueAt(seleccionar, 1).toString());
-    }//GEN-LAST:event_tblListaLocalesMouseClicked
-
-    private void btnAgregarATablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarATablaActionPerformed
-        // TODO add your handling code here:
+        txtPosicion.setText(tblListaLocales.getValueAt(seleccionar, 2).toString());
         
-    }//GEN-LAST:event_btnAgregarATablaActionPerformed
+        
+    }//GEN-LAST:event_tblListaLocalesMouseClicked
 
     private void btnMostrarGrafosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarGrafosActionPerformed
         // TODO add your handling code here:
-        
-        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7);
-        
-//        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7);
-        grafoDirigiodoEtiquetado.etiquetarVertice(1, "1a");
-        grafoDirigiodoEtiquetado.etiquetarVertice(2, "2a");
-        grafoDirigiodoEtiquetado.etiquetarVertice(3, "3a");
-        grafoDirigiodoEtiquetado.etiquetarVertice(4, "4a");
-        grafoDirigiodoEtiquetado.etiquetarVertice(5, "5a");
-        grafoDirigiodoEtiquetado.etiquetarVertice(6, "6a");
-        grafoDirigiodoEtiquetado.etiquetarVertice(7, "7a");
+        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7, String.class);
+        grafoDirigiodoEtiquetado.etiquetarVertice(1, "1");
+        grafoDirigiodoEtiquetado.etiquetarVertice(2, "2");
+        grafoDirigiodoEtiquetado.etiquetarVertice(3, "3");
+        grafoDirigiodoEtiquetado.etiquetarVertice(4, "4");
+        grafoDirigiodoEtiquetado.etiquetarVertice(5, "5");
+        grafoDirigiodoEtiquetado.etiquetarVertice(6, "6");
+        grafoDirigiodoEtiquetado.etiquetarVertice(7, "7");
        
         try {
             grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(2), 30.0);
@@ -425,19 +354,17 @@ public class frmPrincipal extends javax.swing.JFrame {
             grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(5), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
             grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(2), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
             grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(7), 30.0);
-//            gde.insertarAristaE(gde.obtenerEtiqueta(1), gde.obtenerEtiqueta(4), 1000.0);
-            //System.out.println(gde.caminiMinimo(1, 4));
+            
             grafoDirigiodoEtiquetado.caminoMinimo(6, 3).imprimir();
-//            grafoDirigiodoEtiquetado.caminoMinimo(3, 7).imprimir();
+            grafoDirigiodoEtiquetado.caminoMinimo(3, 7).imprimir();
 //            gde.DijkstracaminoMinimo(1).imprimir();
             //System.out.println(gde.toString());
+            new FrmGrafo(null, true, grafoDirigiodoEtiquetado, 1).setVisible(true);
             //new UbicacionController().listar().imprimir();
         } 
         catch (Exception e) {
             
         }
-
-    
     }//GEN-LAST:event_btnMostrarGrafosActionPerformed
 
     /**
@@ -476,7 +403,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregarATabla;
     private javax.swing.JButton btnCrearLocal;
     private javax.swing.JButton btnEditarLocal;
     private javax.swing.JButton btnEliminarLocal;
@@ -484,25 +410,17 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnRecorridoDijstra;
     private javax.swing.JButton btnRecorridoFloyd;
     private javax.swing.JButton btnSalir;
-    public static javax.swing.JComboBox<String> cbxDestino;
-    public static javax.swing.JComboBox<String> cbxOrigen;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable tblListaLocales;
+    public static javax.swing.JTable tblListaLocales;
     private javax.swing.JTextField txtDescripcionLocal;
     private javax.swing.JTextField txtNombreLocal;
     private javax.swing.JTextField txtPosicion;

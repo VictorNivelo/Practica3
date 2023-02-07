@@ -13,7 +13,7 @@ import Controlador.Grafo.Exception.VerticeOfSizeException;
 
 public class GrafoNoDirigidoEtiquetado<E> extends GrafoDirigidoEtiquetado<E>{
     
-    public GrafoNoDirigidoEtiquetado(Integer numVertices) {
+    public GrafoNoDirigidoEtiquetado(Integer numVertices , Class clazz) {
         super(numVertices);
     }
     

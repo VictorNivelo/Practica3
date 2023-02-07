@@ -24,7 +24,7 @@ public class PosicionController {
     private ListaEnlazada<Posicion> posiciones = new ListaEnlazada<>();
 
     public void crearGrafoLista() {
-        grafo = new GrafoNoDirigidoEtiquetado<>(posiciones.getSize());
+        grafo = new GrafoNoDirigidoEtiquetado<>(posiciones.getSize(), Posicion.class);
         for (int i = 1; i <= posiciones.getSize(); i++) {
             try {
                 grafo.etiquetar(i, posiciones.obtener(i - 1));
