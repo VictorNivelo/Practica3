@@ -336,9 +336,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void btnMostrarGrafosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarGrafosActionPerformed
         // TODO add your handling code here:
-        int i=0;
-        int codigo  = i++;
-        String codigof = Integer.toString(codigo);
+        
         GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7, String.class);
         grafoDirigiodoEtiquetado.etiquetarVertice(1, "1");
         grafoDirigiodoEtiquetado.etiquetarVertice(2, "2");

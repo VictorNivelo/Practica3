@@ -79,9 +79,6 @@ public abstract class Grafo {
                 ListaEnlazada<Adyacencia> adyacencia = adyacentes(inicial);
                 Double peso = 10000000.0;
                 int T = -1;
-                pesos.insertar(peso);
-                camino.insertar(T);
-                inicial = T;
                 
                 for (int i = 0; i < adyacencia.getSize(); i++){
                     Adyacencia ad = adyacencia.obtener(i);
@@ -101,7 +98,9 @@ public abstract class Grafo {
                         }
                     }
                 }
-                
+                pesos.insertar(peso);
+                camino.insertar(T);
+                inicial = T;
                 if(destino.intValue() == inicial.intValue()){
                     finalizar = true;
                 }
@@ -240,7 +239,7 @@ public abstract class Grafo {
 
     public void Floyd() throws Exception {
         
-//        ListaEnlazada ListaFloyd = new ListaEnlazada();
+        ListaEnlazada ListaFloyd = new ListaEnlazada();
         Double[][] Pesos = pesosGrafo(this);
         Integer NumeroVertices = this.numVertices();
         Integer[][] TrazarRuta = new Integer[NumeroVertices][NumeroVertices];

@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Victor
  */
-public class ModeloTablaArbol extends AbstractTableModel{
+public class ModeloTablaLocal extends AbstractTableModel{
     private LocalController locales;
     
     @Override

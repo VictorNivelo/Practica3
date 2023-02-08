@@ -44,7 +44,7 @@ public class ModeloTablaAdyacencia extends AbstractTableModel {
                 }
             } 
             catch (Exception e) {
-                System.out.println("Error en ver arista");
+                System.out.println("Error");
             }
         }
         return "";
