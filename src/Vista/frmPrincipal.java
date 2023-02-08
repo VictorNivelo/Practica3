@@ -310,11 +310,10 @@ public class frmPrincipal extends javax.swing.JFrame {
                 
             } 
             else {
-                frmModificarLocal.toFront();
+                frmModificarLocal.dispose();
+                frmModificarLocal = null;
+//                frmModificarLocal.toFront();
             }
-            
-//            abrir.setVisible(true);
-//            this.setVisible(false);
         }
 
     }//GEN-LAST:event_btnEditarLocalActionPerformed
@@ -337,6 +336,9 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void btnMostrarGrafosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarGrafosActionPerformed
         // TODO add your handling code here:
+        int i=0;
+        int codigo  = i++;
+        String codigof = Integer.toString(codigo);
         GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7, String.class);
         grafoDirigiodoEtiquetado.etiquetarVertice(1, "1");
         grafoDirigiodoEtiquetado.etiquetarVertice(2, "2");
@@ -352,16 +354,19 @@ public class frmPrincipal extends javax.swing.JFrame {
             grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(4), 30.0);
             grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(4), grafoDirigiodoEtiquetado.obtenerEtiqueta(5), 30.0);
             grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(5), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(2), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(7), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(6), grafoDirigiodoEtiquetado.obtenerEtiqueta(7), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(7), grafoDirigiodoEtiquetado.obtenerEtiqueta(1), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
+            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(6), grafoDirigiodoEtiquetado.obtenerEtiqueta(3), 30.0);
             
-            grafoDirigiodoEtiquetado.caminoMinimo(6, 3).imprimir();
-            grafoDirigiodoEtiquetado.caminoMinimo(3, 7).imprimir();
-//            gde.DijkstracaminoMinimo(1).imprimir();
-            //System.out.println(gde.toString());
-            new FrmGrafo(null, true, grafoDirigiodoEtiquetado, 1).setVisible(true);
-            //new UbicacionController().listar().imprimir();
-        } 
+            int Inicio = Integer.parseInt(JOptionPane.showInputDialog("mete el origen"));
+            int fin = Integer.parseInt(JOptionPane.showInputDialog("mete el fin"));
+            
+            grafoDirigiodoEtiquetado.caminoMinimo(Inicio, fin).imprimir();
+//            grafoDirigiodoEtiquetado.caminoMinimo(3, 7).imprimir();
+
+            new FrmGrafo(null, true, grafoDirigiodoEtiquetado, 1).setVisible(true); 
+       } 
         catch (Exception e) {
             
         }
@@ -421,8 +426,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable tblListaLocales;
-    private javax.swing.JTextField txtDescripcionLocal;
-    private javax.swing.JTextField txtNombreLocal;
-    private javax.swing.JTextField txtPosicion;
+    public static javax.swing.JTextField txtDescripcionLocal;
+    public static javax.swing.JTextField txtNombreLocal;
+    public static javax.swing.JTextField txtPosicion;
     // End of variables declaration//GEN-END:variables
 }

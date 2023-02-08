@@ -16,6 +16,13 @@ public class frmModificarLocal extends javax.swing.JFrame {
     public frmModificarLocal() {
         initComponents();
         this.setLocationRelativeTo(null);
+        CargarTextos();
+    }
+    
+    public void CargarTextos(){
+        txtNombreModificar.setText(frmPrincipal.txtNombreLocal.getText());
+        txtDescripcionModificar.setText(frmPrincipal.txtDescripcionLocal.getText());
+        txtDistanciaModificar.setText(frmPrincipal.txtPosicion.getText());
     }
 
     /**
@@ -164,9 +171,11 @@ public class frmModificarLocal extends javax.swing.JFrame {
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
-        frmPrincipal abrir = new frmPrincipal();
-        abrir.setVisible(true);
-        this.setVisible(false);
+//        frmPrincipal abrir = new frmPrincipal();
+//        abrir.setVisible(true);
+//        this.setVisible(false);
+        this.dispose();
+        
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnModificarLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarLocalActionPerformed

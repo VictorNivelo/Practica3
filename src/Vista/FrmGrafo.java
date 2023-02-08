@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package vista;
 
 import Controlador.Grafo.Adyacencia;
@@ -27,7 +23,7 @@ import javax.swing.JScrollPane;
 
 /**
  *
- * @author sebastian
+ * @author Victor
  */
 public class FrmGrafo extends javax.swing.JDialog {
     private Grafo grafo;
@@ -48,19 +44,11 @@ public class FrmGrafo extends javax.swing.JDialog {
     
     private void cargaDatos(Integer estado) {
         mxGraph graph = new mxGraph();
-        //jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        
         
         mxGraphComponent graphComponent = new mxGraphComponent(graph);
-        graphComponent.setSize(new Dimension(552, 410));
-        
-        //jScrollPane1 = new javax.swing.JScrollPane();
-       // jPanel1.setSize(new Dimension(800, 800));
-       // jPanel1.add(graphComponent, BorderLayout.CENTER);
-        //jScrollPane1.setViewportView(jPanel1);
-        //jScrollPane1.setBounds(0, 0, 400, 300);
+        graphComponent.setSize(new Dimension(600, 450));
+
         getContentPane().add(graphComponent);
-        
 
         ListaEnlazada<Object> pintados = new ListaEnlazada();
         Object parent = graph.getDefaultParent();
@@ -76,9 +64,6 @@ public class FrmGrafo extends javax.swing.JDialog {
                 }
                     
                 pintados.insertar(start);
-                //insertar(i, start, pintados);
-                
-                
             }
             for(int i = 0; i <= pintados.getSize(); i++ ) {                               
                 ListaEnlazada<Adyacencia> lista = grafo.adyacentes(i+1);
@@ -89,29 +74,24 @@ public class FrmGrafo extends javax.swing.JDialog {
                     
                     graph.insertEdge(parent, null, String.valueOf(a.getPeso()), start, dest);
                 }
-                //insertar(i, start, pintados);
-                
-                
             }
+        } 
+        catch (Exception e) {
             
-        } catch (Exception e) {
-            
-        } finally {
+        } 
+        finally {
             graph.getModel().endUpdate();
         }
         morphGraph(graph, graphComponent);
         new mxCircleLayout(graph).execute(graph.getDefaultParent());
-        //new mxCircleLayout(graph).execute(graph.getDefaultParent());
-        //new mxHierarchicalLayout(graph).execute(graph.getDefaultParent());
     }
-    
-    
     
     private void insertar(Integer id, Object obj, ListaEnlazada lista) {
         Object o = null;
         try {
             o = lista.obtener((id - 1));            
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             lista.insertar(o);
         }
     }
@@ -122,9 +102,11 @@ public class FrmGrafo extends javax.swing.JDialog {
         graph.getModel().beginUpdate();
         try {
             layout.execute(graph.getDefaultParent());
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             
-        } finally{
+        } 
+        finally{
             mxMorphing morph = new mxMorphing(graphComponent, 20, 1.5, 20);
             morph.addListener(mxEvent.DONE, new mxEventSource.mxIEventListener() {
                 @Override
@@ -148,7 +130,7 @@ public class FrmGrafo extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(null);
 
-        setSize(new java.awt.Dimension(562, 424));
+        setSize(new java.awt.Dimension(619, 458));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

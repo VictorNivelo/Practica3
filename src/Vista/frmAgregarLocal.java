@@ -53,10 +53,10 @@ public class frmAgregarLocal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtDescripcion = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
+        txtDescripcionAgregar = new javax.swing.JTextField();
+        txtNombreAgregar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtDistancia = new javax.swing.JTextField();
+        txtDistanciaAgregar = new javax.swing.JTextField();
         btnAgregarLocal = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
 
@@ -76,16 +76,16 @@ public class frmAgregarLocal extends javax.swing.JFrame {
 
         jLabel3.setText("Descipcion:");
 
-        txtDescripcion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDescripcionAgregar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        txtNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNombreAgregar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel4.setText("Distancia:");
 
-        txtDistancia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtDistancia.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtDistanciaAgregar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDistanciaAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDistanciaKeyTyped(evt);
+                txtDistanciaAgregarKeyTyped(evt);
             }
         });
 
@@ -104,9 +104,9 @@ public class frmAgregarLocal extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescripcion)
-                            .addComponent(txtNombre)
-                            .addComponent(txtDistancia))))
+                            .addComponent(txtDescripcionAgregar)
+                            .addComponent(txtNombreAgregar)
+                            .addComponent(txtDistanciaAgregar))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -117,15 +117,15 @@ public class frmAgregarLocal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcionAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDistanciaAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -219,19 +219,19 @@ public class frmAgregarLocal extends javax.swing.JFrame {
 //        
 //        System.out.println(""+local+" "+posi);
 
-    String NombreLocal = txtNombre.getText();
-    String DescipcionLocal = txtDescripcion.getText();
-    String DistanciaLocal = txtDistancia.getText();
+    String NombreLocal = txtNombreAgregar.getText();
+    String DescipcionLocal = txtDescripcionAgregar.getText();
+    String DistanciaLocal = txtDistanciaAgregar.getText();
     
     int i = 1;
 
-    if(txtNombre.getText().isEmpty()){
+    if(txtNombreAgregar.getText().isEmpty()){
         JOptionPane.showMessageDialog(null, "Por favor llene el nombre", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
     }
-    else if(txtDescripcion.getText().isEmpty()){
+    else if(txtDescripcionAgregar.getText().isEmpty()){
         JOptionPane.showMessageDialog(null, "Por favor llene la descripcion", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
     }
-    else if(txtDistancia.getText().isEmpty()){
+    else if(txtDistanciaAgregar.getText().isEmpty()){
         JOptionPane.showMessageDialog(null, "Por favor llene la latitud", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
     }
     else{
@@ -255,10 +255,10 @@ public class frmAgregarLocal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAgregarLocalActionPerformed
 
-    private void txtDistanciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDistanciaKeyTyped
+    private void txtDistanciaAgregarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDistanciaAgregarKeyTyped
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_txtDistanciaKeyTyped
+    }//GEN-LAST:event_txtDistanciaAgregarKeyTyped
 
     /**
      * @param args the command line arguments
@@ -304,8 +304,8 @@ public class frmAgregarLocal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtDistancia;
-    private javax.swing.JTextField txtNombre;
+    public static javax.swing.JTextField txtDescripcionAgregar;
+    public static javax.swing.JTextField txtDistanciaAgregar;
+    public static javax.swing.JTextField txtNombreAgregar;
     // End of variables declaration//GEN-END:variables
 }

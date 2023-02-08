@@ -69,16 +69,16 @@ public class GrafoDirigidoEtiquetado<E> extends GrafoDirigido{
         dicVertices.put(etiqueta, codigo);
     }
     
-    public Boolean existeAristaE(E o, E d) throws Exception {
-        return this.existeArista(obtenerCodigoE(o), obtenerCodigoE(d));        
+    public Boolean existeAristaE(E origen, E destino) throws Exception {
+        return this.existeArista(obtenerCodigoE(origen), obtenerCodigoE(destino));        
     }
     
-    public void insertarAristaE(E o, E d, Double peso) throws Exception {
-        insertarArista(obtenerCodigoE(o), obtenerCodigoE(d), peso);
+    public void insertarAristaE(E origen, E destino, Double peso) throws Exception {
+        insertarArista(obtenerCodigoE(origen), obtenerCodigoE(destino), peso);
     }
     
-    public void insertarAristaE(E o, E d) throws Exception {
-        insertarArista(obtenerCodigoE(o), obtenerCodigoE(d));
+    public void insertarAristaE(E origen, E destino) throws Exception {
+        insertarArista(obtenerCodigoE(origen), obtenerCodigoE(destino));
     }
     
     
