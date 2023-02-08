@@ -14,9 +14,14 @@ import Vista.Utilidades.Utilidades;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -223,7 +228,7 @@ public class frmAgregarLocal extends javax.swing.JFrame {
     String DescipcionLocal = txtDescripcionAgregar.getText();
     String DistanciaLocal = txtDistanciaAgregar.getText();
     
-    int i = 1;
+    
 
     if(txtNombreAgregar.getText().isEmpty()){
         JOptionPane.showMessageDialog(null, "Por favor llene el nombre", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
@@ -235,21 +240,60 @@ public class frmAgregarLocal extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Por favor llene la latitud", "CAMPO VACIO", JOptionPane.WARNING_MESSAGE);
     }
     else{
-        Locales locallist = new Locales(i++, NombreLocal, DescipcionLocal, DistanciaLocal);
-        listaLocales.add(locallist);
         
         Gson guardarGson = new Gson();
         
-//        String json = guardarGson.toJson(listaLocales);
+        File jsonFile = new File("ListaLocales.json");
         
-        try (FileWriter writer = new FileWriter("ListaLocales.json")) {
-            guardarGson.toJson(listaLocales, writer);
-            System.out.println("Se ha guardado correctamente");
-            JOptionPane.showMessageDialog(null, "Guardado correctamente", "GUARDADO", JOptionPane.INFORMATION_MESSAGE);
-        } 
-        catch (IOException e) {
-            e.printStackTrace();
+        if(jsonFile.exists()){
+            FileReader reader;
+            
+            try {
+                reader = new FileReader("ListaLocales.json");
+                Locales[] dataArray = guardarGson.fromJson(reader, Locales[].class);
+                listaLocales = new LinkedList<>();
+
+                for (Locales data : dataArray) {
+                    listaLocales.add(data);
+                }
+            } 
+            catch (FileNotFoundException ex) {
+                Logger.getLogger(frmAgregarLocal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
+        int numbers = 0;
+        for (int i = 0; i <= listaLocales.size(); i++) {
+            numbers = i;
+        }
+        
+        Locales locallist = new Locales(numbers, NombreLocal, DescipcionLocal, DistanciaLocal);
+            listaLocales.add(locallist);
+        
+        FileWriter writer;
+
+        try {
+            writer = new FileWriter("ListaLocales.json");
+            guardarGson.toJson(listaLocales, writer);
+            writer.close();
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(frmAgregarLocal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+//        
+////        String json = guardarGson.toJson(listaLocales);
+//        
+//        try (FileWriter writer = new FileWriter("ListaLocales.json")) {
+//            guardarGson.toJson(listaLocales, writer);
+//            System.out.println("Se ha guardado correctamente");
+//            JOptionPane.showMessageDialog(null, "Guardado correctamente", "GUARDADO", JOptionPane.INFORMATION_MESSAGE);
+//        } 
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
         
     }
 

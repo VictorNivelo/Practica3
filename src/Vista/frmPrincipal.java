@@ -7,9 +7,17 @@ package Vista;
 import Controlador.Grafo.Adyacencia;
 import Controlador.Grafo.Grafo;
 import Controlador.Grafo.GrafoNoDirigidoEtiquetado;
+import Controlador.ListaEnlazada.ListaEnlazada;
 import Controlador.PosicionController;
+import Modelo.Locales;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import vista.FrmGrafo;
 
@@ -19,6 +27,7 @@ import vista.FrmGrafo;
  * @author Victor
  */
 public class frmPrincipal extends javax.swing.JFrame {
+    DefaultTableModel modeloTabla = new DefaultTableModel();
     PosicionController pc = new PosicionController();
     Grafo grafo;
     private static JFrame frmModificarLocal;
@@ -30,15 +39,58 @@ public class frmPrincipal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        DefaultTableModel model = (DefaultTableModel) tblListaLocales.getModel();
-
-        Object[] rowData = {"Valor 1", "Valor 2", "Valor 3"};
-
-        model.addColumn("1");
-        model.addColumn("2");
-        model.addColumn("3");
-        model.addRow(rowData);
+        modeloTabla.addColumn("id");
+        modeloTabla.addColumn("Nombre Local");
+        modeloTabla.addColumn("Descripcion");
+        modeloTabla.addColumn("Distancia");
         
+        modeloTabla.setColumnIdentifiers(new Object[]{"id","Nombre Local", "Descripcion", "Distancia"});
+        
+        CargarLocales();
+        
+    }
+    
+    public boolean ExisteEnTabla(JTable tabla, String dto, int col) {
+
+        boolean Existe = false;
+
+//        String nuevoValor = txtCantidadMedicamento.getText();
+//        String FechaActualizada = txtFechaCaducidad.getText();
+
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+
+            if (tabla.getValueAt(i, col).equals(dto)) {
+//                tabla.setValueAt(nuevoValor, i, 1);
+//                tabla.setValueAt(FechaActualizada, i, 3);
+
+                Existe = true;
+            }
+        }
+        return Existe;
+    }
+    
+    private void CargarLocales() {
+        Gson gson = new Gson();
+
+        FileReader reader;
+
+        try {
+            reader = new FileReader("ListaLocales.json");
+            LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
+
+            for (Locales locales : ListaLocalesGuardados) {
+                if (!ExisteEnTabla(tblListaLocales, locales.getNombreLocal(), 0)) {
+                    modeloTabla.addRow(new Object[]{locales.getId(), locales.getNombreLocal(), locales.getDescripcion(), locales.getDistancia()});
+                    tblListaLocales.setModel(modeloTabla);
+                } 
+                else {
+
+                }
+            }
+        } 
+        catch (FileNotFoundException e) {
+
+        }
     }
     
     
