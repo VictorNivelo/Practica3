@@ -8,8 +8,6 @@ import Controlador.Colas.Colas;
 import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
 import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
-import Controlador.Pilas.Pilas;
-
 /**
  *
  * @author Victor
@@ -120,7 +118,6 @@ public abstract class Grafo {
         Boolean Marcador = true;
         
         for(int i = 1; i <= numVertices(); i++){
-            
             ListaEnlazada<Adyacencia> lista = adyacentes(i);
             
             if(lista.estaVacia() || lista.getSize() == 0){
@@ -136,7 +133,6 @@ public abstract class Grafo {
         Boolean Marcador = false;
         
         for(int i = 0; i < lista.getSize(); i++){
-            
             if(lista.obtener(i).intValue() == vertice.intValue()){
                 Marcador = true;
                 break;
@@ -162,11 +158,8 @@ public abstract class Grafo {
         Integer[][] matriz = new Integer[vertices][vertices];
         
         for (int i = 0; i < vertices; i++) {
-            
             for (int j = 0; j < vertices; j++) {
-                
                 Double peso = grafo.pesoArista(i + 1, j + 1);
-                
                 if(peso != 0){
                     matriz[i][j] = 1;
                 }
@@ -290,18 +283,18 @@ public abstract class Grafo {
         
         nodo = nodo -1;
         Integer NumeroVertices = this.numVertices();
-        ListaEnlazada recorrido = new ListaEnlazada();
-        Boolean[] visitado = new Boolean[NumeroVertices];
+        ListaEnlazada Recorrido = new ListaEnlazada();
+        Boolean[] Visitados = new Boolean[NumeroVertices];
         Integer[][] matrizAd = matrizAdyacencia(this);
         
         for(int i = 0; i < matrizAd.length; i++){
-            visitado[i] = false;
+            Visitados[i] = false;
         }
         
-        visitado[nodo] = true;
-        Pilas pila = new Pilas();
+        Visitados[nodo] = true;
+//        Pilas pila = new Pilas();
         
-        return recorrido;
+        return Recorrido;
     }
     
     public ListaEnlazada BPA(Integer nodo) throws Exception{

@@ -37,6 +37,5 @@ public class Adyacencia {
     public String toString() {
         return "Destino: "+destino+ " - Peso: "+peso;
     }
-    
-    
+
 }

@@ -9,23 +9,24 @@ import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
 import Controlador.Pilas.Exceptions.PilaLlenaException;
 import Controlador.Pilas.Exceptions.PilaVaciaException;
+import java.util.Objects;
 
 /**
  *
  * @author Victor
  */
 public class Pilas<E> extends ListaEnlazada<E> {
-    private Integer tope;
+    private Integer Limite;
 
     public Pilas() {
     }
 
     public Pilas(Integer tope) {
-        this.tope = tope;
+        this.Limite = tope;
     }
     
     public Boolean estaLleno(){
-        return tope == getSize();
+        return Objects.equals(Limite, getSize());
     }
     
     public void push(E dato) throws PilaLlenaException{
