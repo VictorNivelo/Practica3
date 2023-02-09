@@ -1,0 +1,4 @@
+vista.frmPresentacionGrafos
+vista.frmPresentacionGrafos$2$1
+vista.frmPresentacionGrafos$2
+vista.frmPresentacionGrafos$1

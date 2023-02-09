@@ -176,10 +176,12 @@ public abstract class Grafo {
         ListaEnlazada caminoDijkstra = new ListaEnlazada();
         Integer Origen = origen;
         Integer NumeroDeVertices = this.numVertices();
+        
         Double[] AuxiliarDouble = new Double[NumeroDeVertices];
         Boolean[] Marca = new Boolean[NumeroDeVertices];
         Integer[] Ultimo = new Integer[NumeroDeVertices];
         Double[][] MatrizPesos = pesosGrafo(this);
+        
         Marca[Origen] = true;
         AuxiliarDouble[Origen] = 0.0;
 
@@ -206,7 +208,7 @@ public abstract class Grafo {
 
     private Integer minimo(Integer n, Boolean[] F, Double[] D) {
         
-        Double mx = 10000000.0;
+        Double mx = 1000000000.0;
         Integer v = 1;
         
         for (int j = 0; j < n; j++) {
@@ -240,6 +242,7 @@ public abstract class Grafo {
     public void Floyd() throws Exception {
         
         ListaEnlazada ListaFloyd = new ListaEnlazada();
+        
         Double[][] Pesos = pesosGrafo(this);
         Integer NumeroVertices = this.numVertices();
         Integer[][] TrazarRuta = new Integer[NumeroVertices][NumeroVertices];

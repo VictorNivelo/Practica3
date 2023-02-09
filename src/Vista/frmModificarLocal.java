@@ -4,6 +4,20 @@
  */
 package Vista;
 
+import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
+import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
+import Controlador.ListaEnlazada.ListaEnlazada;
+import Modelo.Locales;
+import static Vista.frmAgregarLocal.listaLocales;
+import com.google.gson.Gson;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Victor
@@ -61,7 +75,9 @@ public class frmModificarLocal extends javax.swing.JFrame {
 
         txtDescripcionModificar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        txtNombreModificar.setEditable(false);
         txtNombreModificar.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNombreModificar.setFocusable(false);
 
         jLabel4.setText("Distancia");
 
@@ -180,6 +196,66 @@ public class frmModificarLocal extends javax.swing.JFrame {
 
     private void btnModificarLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarLocalActionPerformed
         // TODO add your handling code here:
+        Gson gson = new Gson();
+        
+        String NombreModificar = txtNombreModificar.getText();
+        String DescripcionModificar = txtDescripcionModificar.getText();
+        String Distancia = txtDistanciaModificar.getText();
+        
+        try {
+            File jsonFile = new File("ListaLocales.json");
+
+            if (jsonFile.exists()) {
+                FileReader reader = new FileReader("ListaLocales.json");
+                Locales[] dataArray = gson.fromJson(reader, Locales[].class);
+                frmAgregarLocal.listaLocales = new LinkedList<>();
+
+                for (Locales data : dataArray) {
+                    frmAgregarLocal.listaLocales.add(data);
+                }
+            } 
+            else {
+                frmAgregarLocal.listaLocales = new LinkedList<>();
+            }
+            
+            int numbers = 0;
+            for (int i = 0; i <= listaLocales.size(); i++) {
+                numbers = i;
+            }
+            
+            Locales nuevoLocal = new Locales(numbers, NombreModificar, DescripcionModificar, Distancia);
+
+            boolean nombreExiste = false;
+            int indice = -1;
+
+            for (int i = 0; i < listaLocales.size(); i++) {
+                if (listaLocales.get(i).getNombreLocal().equals(nuevoLocal.getNombreLocal())) {
+                    nombreExiste = true;
+                    indice = i;
+                    break;
+                }
+            }
+
+            if (nombreExiste) {
+                listaLocales.get(indice).setNombreLocal(nuevoLocal.getNombreLocal());
+                listaLocales.get(indice).setDescripcion(nuevoLocal.getDescripcion());
+                listaLocales.get(indice).setDistancia(nuevoLocal.getDistancia());
+            } 
+            else {
+                listaLocales.add(nuevoLocal);
+            }
+
+            FileWriter writer = new FileWriter("ListaLocales.json");
+            gson.toJson(listaLocales, writer);
+            writer.close();
+            
+            frmPrincipal abrir = new frmPrincipal();
+            abrir.setVisible(true);
+            this.setVisible(false);
+        }
+        catch (IOException ex) {
+
+        }
         
     }//GEN-LAST:event_btnModificarLocalActionPerformed
 

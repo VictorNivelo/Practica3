@@ -4,6 +4,7 @@
  */
 package Vista;
 
+import Controlador.Grafo.GrafoNoDirigidoEtiquetado;
 import Controlador.ListaEnlazada.ListaEnlazada;
 import Controlador.LocalController;
 import Controlador.PosicionController;
@@ -24,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import vista.frmPresentacionGrafos;
 
 /**
  *
@@ -32,7 +34,8 @@ import javax.swing.table.DefaultTableModel;
 public class frmAgregarLocal extends javax.swing.JFrame {
     LocalController localC = new LocalController();
     PosicionController PosicionC = new PosicionController();
-    public LinkedList<Locales> listaLocales = new LinkedList<>();
+    
+    public static LinkedList<Locales> listaLocales = new LinkedList<>();
 
     /**
      * Creates new form frmAgregarLocal
@@ -264,7 +267,7 @@ public class frmAgregarLocal extends javax.swing.JFrame {
         
         int numbers = 0;
         for (int i = 0; i <= listaLocales.size(); i++) {
-            numbers = i;
+            numbers = i+1;
         }
         
         Locales locallist = new Locales(numbers, NombreLocal, DescipcionLocal, DistanciaLocal);
@@ -280,6 +283,10 @@ public class frmAgregarLocal extends javax.swing.JFrame {
         catch (IOException ex) {
             Logger.getLogger(frmAgregarLocal.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        frmPrincipal abrir = new frmPrincipal();
+        abrir.setVisible(true);
+        this.setVisible(false);
         
         
         

@@ -10,16 +10,23 @@ import Controlador.Grafo.GrafoNoDirigidoEtiquetado;
 import Controlador.ListaEnlazada.ListaEnlazada;
 import Controlador.PosicionController;
 import Modelo.Locales;
+import static Vista.frmAgregarLocal.listaLocales;
+import static Vista.frmAgregarLocal.txtDistanciaAgregar;
+import static Vista.frmAgregarLocal.txtNombreAgregar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import vista.FrmGrafo;
+import vista.frmPresentacionGrafos;
 
 
 /**
@@ -27,9 +34,9 @@ import vista.FrmGrafo;
  * @author Victor
  */
 public class frmPrincipal extends javax.swing.JFrame {
+    
     DefaultTableModel modeloTabla = new DefaultTableModel();
-    PosicionController pc = new PosicionController();
-    Grafo grafo;
+
     private static JFrame frmModificarLocal;
 
     /**
@@ -47,15 +54,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         modeloTabla.setColumnIdentifiers(new Object[]{"id","Nombre Local", "Descripcion", "Distancia"});
         
         CargarLocales();
-        
     }
+    
+    
     
     public boolean ExisteEnTabla(JTable tabla, String dto, int col) {
 
         boolean Existe = false;
-
-//        String nuevoValor = txtCantidadMedicamento.getText();
-//        String FechaActualizada = txtFechaCaducidad.getText();
 
         for (int i = 0; i < tabla.getRowCount(); i++) {
 
@@ -69,17 +74,17 @@ public class frmPrincipal extends javax.swing.JFrame {
         return Existe;
     }
     
-    private void CargarLocales() {
-        Gson gson = new Gson();
-
-        FileReader reader;
-
+    public void CargarLocales() {
+        
         try {
+            Gson gson = new Gson();
+            FileReader reader;
             reader = new FileReader("ListaLocales.json");
+            
             LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
 
             for (Locales locales : ListaLocalesGuardados) {
-                if (!ExisteEnTabla(tblListaLocales, locales.getNombreLocal(), 0)) {
+                if (!ExisteEnTabla(tblListaLocales, locales.getId().toString(), 0)) {
                     modeloTabla.addRow(new Object[]{locales.getId(), locales.getNombreLocal(), locales.getDescripcion(), locales.getDistancia()});
                     tblListaLocales.setModel(modeloTabla);
                 } 
@@ -92,6 +97,46 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         }
     }
+    
+    public void EliminarDato(){
+        
+        int filaselecionada = tblListaLocales.getSelectedRow();
+        if (filaselecionada >= 0) {
+            modeloTabla.removeRow(filaselecionada);
+            
+            try {
+                
+                Gson gson = new Gson();
+                FileReader reader;
+                reader = new FileReader("ListaLocales.json");
+
+                LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
+
+//                System.out.println(""+filaselecionada);
+                
+                ListaLocalesGuardados.remove(filaselecionada);
+                
+                try {
+                    FileWriter writer;
+                    writer = new FileWriter("ListaLocales.json");
+                    gson.toJson(ListaLocalesGuardados, writer);
+                    writer.close();
+                } 
+                catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            } 
+            catch (FileNotFoundException ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+        else {
+            JOptionPane.showMessageDialog(null, "Seleccione el medicamento a eliminar", "Seleccione una fila", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
     
     
     /**
@@ -124,6 +169,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         btnRecorridoDijstra = new javax.swing.JButton();
         btnRecorridoFloyd = new javax.swing.JButton();
         btnMostrarGrafos = new javax.swing.JButton();
+        btnBotonBusquedaAnchura = new javax.swing.JButton();
+        btnBusquedaEnProfundidad = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +217,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
 
         btnEliminarLocal.setText("ELIMINAR LOCAL");
+        btnEliminarLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarLocalActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -277,11 +329,25 @@ public class frmPrincipal extends javax.swing.JFrame {
         btnRecorridoDijstra.setText("RECORRIDO DIJKSTRA");
 
         btnRecorridoFloyd.setText("RECORRIDO FLOYD");
+        btnRecorridoFloyd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecorridoFloydActionPerformed(evt);
+            }
+        });
 
         btnMostrarGrafos.setText("MOSTRAR GRAFOS");
         btnMostrarGrafos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMostrarGrafosActionPerformed(evt);
+            }
+        });
+
+        btnBotonBusquedaAnchura.setText("BPA");
+
+        btnBusquedaEnProfundidad.setText("BPP");
+        btnBusquedaEnProfundidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBusquedaEnProfundidadActionPerformed(evt);
             }
         });
 
@@ -294,17 +360,22 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnSalir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnMostrarGrafos))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnBusquedaEnProfundidad)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBotonBusquedaAnchura)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnRecorridoFloyd)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnRecorridoDijstra))
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
@@ -323,7 +394,9 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addComponent(btnSalir)
                     .addComponent(btnRecorridoDijstra)
                     .addComponent(btnRecorridoFloyd)
-                    .addComponent(btnMostrarGrafos))
+                    .addComponent(btnMostrarGrafos)
+                    .addComponent(btnBotonBusquedaAnchura)
+                    .addComponent(btnBusquedaEnProfundidad))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -354,12 +427,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         if(tblListaLocales.getSelectedRowCount() != 1){
             JOptionPane.showMessageDialog(null, "Seleccione un local para editar", "NO SELECCIONADO", JOptionPane.WARNING_MESSAGE);
 
-        }else{
+        }
+        else{
             
             if (frmModificarLocal == null) {
                 frmModificarLocal = new frmModificarLocal();
                 frmModificarLocal.setVisible(true);
-                
+                this.setVisible(false);
             } 
             else {
                 frmModificarLocal.dispose();
@@ -367,6 +441,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 //                frmModificarLocal.toFront();
             }
         }
+        
 
     }//GEN-LAST:event_btnEditarLocalActionPerformed
 
@@ -379,9 +454,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         int seleccionar = tblListaLocales.rowAtPoint(evt.getPoint());
         
-        txtNombreLocal.setText( tblListaLocales.getValueAt(seleccionar, 0).toString());
-        txtDescripcionLocal.setText( tblListaLocales.getValueAt(seleccionar, 1).toString());
-        txtPosicion.setText(tblListaLocales.getValueAt(seleccionar, 2).toString());
+        txtNombreLocal.setText( tblListaLocales.getValueAt(seleccionar, 1).toString());
+        txtDescripcionLocal.setText( tblListaLocales.getValueAt(seleccionar, 2).toString());
+        txtPosicion.setText(tblListaLocales.getValueAt(seleccionar, 3).toString());
         
         
     }//GEN-LAST:event_tblListaLocalesMouseClicked
@@ -389,38 +464,150 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void btnMostrarGrafosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarGrafosActionPerformed
         // TODO add your handling code here:
         
-        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7, String.class);
-        grafoDirigiodoEtiquetado.etiquetarVertice(1, "1");
-        grafoDirigiodoEtiquetado.etiquetarVertice(2, "2");
-        grafoDirigiodoEtiquetado.etiquetarVertice(3, "3");
-        grafoDirigiodoEtiquetado.etiquetarVertice(4, "4");
-        grafoDirigiodoEtiquetado.etiquetarVertice(5, "5");
-        grafoDirigiodoEtiquetado.etiquetarVertice(6, "6");
-        grafoDirigiodoEtiquetado.etiquetarVertice(7, "7");
-       
         try {
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(2), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(2), grafoDirigiodoEtiquetado.obtenerEtiqueta(3), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(4), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(4), grafoDirigiodoEtiquetado.obtenerEtiqueta(5), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(5), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(6), grafoDirigiodoEtiquetado.obtenerEtiqueta(7), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(7), grafoDirigiodoEtiquetado.obtenerEtiqueta(1), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
-            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(6), grafoDirigiodoEtiquetado.obtenerEtiqueta(3), 30.0);
+            Gson gson = new Gson();
+            FileReader reader = new FileReader("ListaLocales.json");
             
-            int Inicio = Integer.parseInt(JOptionPane.showInputDialog("mete el origen"));
-            int fin = Integer.parseInt(JOptionPane.showInputDialog("mete el fin"));
-            
-            grafoDirigiodoEtiquetado.caminoMinimo(Inicio, fin).imprimir();
-//            grafoDirigiodoEtiquetado.caminoMinimo(3, 7).imprimir();
+            LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
 
-            new FrmGrafo(null, true, grafoDirigiodoEtiquetado, 1).setVisible(true); 
-       } 
-        catch (Exception e) {
+//            for (Locales local : ListaLocalesGuardados) {
+//                System.out.println(local.getNombreLocal() + " " + local.getDescripcion());
+//            }
+            GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(ListaLocalesGuardados.size(), String.class);
             
+            for (int i = 0; i < ListaLocalesGuardados.size();i++) {
+//                System.out.println(""+i);
+                Locales listaLocalGuardada = ListaLocalesGuardados.get(i);
+//                System.out.println(""+i);
+//                System.out.println(""+local);
+                grafoDirigiodoEtiquetado.etiquetarVertice(i+1, listaLocalGuardada.getNombreLocal());
+            }
+            
+            for (int i = 0; i < ListaLocalesGuardados.size() - 1; i++) {
+                Locales local1 = ListaLocalesGuardados.get(i);
+                for (int j = i + 1; j < ListaLocalesGuardados.size(); j++) {
+                    Locales local2 = ListaLocalesGuardados.get(j);
+                    try {
+//                        if (!grafoDirigiodoEtiquetado.existeArista(i,i)) {
+//                            if (!grafoDirigiodoEtiquetado.existeArista(j,j)) {
+                            grafoDirigiodoEtiquetado.insertarAristaE(local1.getNombreLocal(), local2.getNombreLocal(), Double.parseDouble(local1.getDistancia()));
+//                        }}
+//                        grafoDirigiodoEtiquetado.insertarAristaE(local1.getNombreLocal(), local2.getNombreLocal(), Double.parseDouble(local1.getDistancia()));
+                    } 
+                    catch (Exception e) {
+                        
+                    }
+                    
+                }
+            }
+            
+//            for (int i = 0; i < ListaLocalesGuardados.size(); i++) {
+//                Locales local1 = ListaLocalesGuardados.get(i);
+//
+//                try {
+//                    grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(2), Double.parseDouble(local1.getDistancia()));
+//                    grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(2), grafoDirigiodoEtiquetado.obtenerEtiqueta(3), Double.parseDouble(local1.getDistancia()));
+//                    grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(4), Double.parseDouble(local1.getDistancia()));
+//                } 
+//                catch (Exception e) {
+//
+//                }
+//            }
+//            for (Locales local : ListaLocalesGuardados) {
+//                for (int i = 0; i < ListaLocalesGuardados.size(); i++) {
+//                    
+//                    Locales locales = ListaLocalesGuardados.get(i);
+//
+//                    grafoDirigiodoEtiquetado.etiquetarVertice(i, local.getNombreLocal());                    
+//                    
+//                    try {
+//                        grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(1), Double.parseDouble(locales.getDistancia()));
+//                        
+//                    } 
+//                    catch (Exception e) {
+//
+//                    }
+//                    
+//                }
+//            }
+            new frmPresentacionGrafos(null, true, grafoDirigiodoEtiquetado, 1).setVisible(true);
+            
+//            for (int i = 0; i < ListaLocalesGuardados.size(); i++) {
+//                
+//                GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(i, String.class);
+//                Locales locales = ListaLocalesGuardados.get(i);
+//                
+//                for (Locales local : ListaLocalesGuardados) {
+////                    for(int j = i; j < ListaLocalesGuardados.size(); j++){
+//                        grafoDirigiodoEtiquetado.etiquetarVertice(1, local.getNombreLocal());
+////                    }
+//                }
+//
+//                try {
+//                    grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(1), Double.parseDouble(locales.getDistancia()));
+//
+//                    
+//                } 
+//                catch (Exception e) {
+//
+//                }
+//                new frmPresentacionGrafos(null, true, grafoDirigiodoEtiquetado, 1).setVisible(true);
+//            }
+        } 
+        catch (FileNotFoundException e) {
+
         }
+
+
+        
+//        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7, String.class);
+
+//        grafoDirigiodoEtiquetado.etiquetarVertice(1, "1");
+//        grafoDirigiodoEtiquetado.etiquetarVertice(2, "2");
+//        grafoDirigiodoEtiquetado.etiquetarVertice(3, "3");
+//        grafoDirigiodoEtiquetado.etiquetarVertice(4, "4");
+//        grafoDirigiodoEtiquetado.etiquetarVertice(5, "5");
+//        grafoDirigiodoEtiquetado.etiquetarVertice(6, "6");
+//        grafoDirigiodoEtiquetado.etiquetarVertice(7, "7");
+       
+//        try {
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(1), grafoDirigiodoEtiquetado.obtenerEtiqueta(2), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(2), grafoDirigiodoEtiquetado.obtenerEtiqueta(3), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(4), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(4), grafoDirigiodoEtiquetado.obtenerEtiqueta(5), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(5), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(6), grafoDirigiodoEtiquetado.obtenerEtiqueta(7), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(7), grafoDirigiodoEtiquetado.obtenerEtiqueta(1), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(3), grafoDirigiodoEtiquetado.obtenerEtiqueta(6), 30.0);
+//            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(6), grafoDirigiodoEtiquetado.obtenerEtiqueta(3), 30.0);
+//            
+//            int Inicio = Integer.parseInt(JOptionPane.showInputDialog("mete el origen"));
+//            int fin = Integer.parseInt(JOptionPane.showInputDialog("mete el fin"));
+            
+//            grafoDirigiodoEtiquetado.caminoMinimo(Inicio, fin).imprimir();
+//            grafoDirigiodoEtiquetado.caminoMinimo(3, 7).imprimir();
+//
+//            new FrmGrafo(null, true, grafoDirigiodoEtiquetado, 1).setVisible(true); 
+//       } 
+//        catch (Exception e) {
+//            
+//        }
     }//GEN-LAST:event_btnMostrarGrafosActionPerformed
+
+    private void btnEliminarLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarLocalActionPerformed
+        // TODO add your handling code here:
+        EliminarDato();
+    }//GEN-LAST:event_btnEliminarLocalActionPerformed
+
+    private void btnRecorridoFloydActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecorridoFloydActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnRecorridoFloydActionPerformed
+
+    private void btnBusquedaEnProfundidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusquedaEnProfundidadActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnBusquedaEnProfundidadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -458,6 +645,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBotonBusquedaAnchura;
+    private javax.swing.JButton btnBusquedaEnProfundidad;
     private javax.swing.JButton btnCrearLocal;
     private javax.swing.JButton btnEditarLocal;
     private javax.swing.JButton btnEliminarLocal;

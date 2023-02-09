@@ -5,37 +5,33 @@ import Controlador.Grafo.Adyacencia;
 import Controlador.Grafo.Grafo;
 import Controlador.Grafo.GrafoDirigidoEtiquetado;
 import Controlador.ListaEnlazada.ListaEnlazada;
-import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.layout.mxIGraphLayout;
-import com.mxgraph.layout.orthogonal.mxOrthogonalLayout;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMorphing;
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
 import com.mxgraph.util.mxEventSource;
 import com.mxgraph.view.mxGraph;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.HashMap;
-import javax.swing.JScrollPane;
+
 
 /**
  *
  * @author Victor
  */
-public class FrmGrafo extends javax.swing.JDialog {
+public class frmPresentacionGrafos extends javax.swing.JDialog {
     private Grafo grafo;
     /**
      * Creates new form FrmGrafo
      */
-    public FrmGrafo(java.awt.Frame parent, boolean modal) {
+    public frmPresentacionGrafos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public FrmGrafo(java.awt.Frame parent, boolean modal, Grafo grafo, Integer estado) {
+    public frmPresentacionGrafos(java.awt.Frame parent, boolean modal, Grafo grafo, Integer estado) {
         super(parent, modal);
         this.grafo= grafo;
         initComponents();
@@ -151,20 +147,21 @@ public class FrmGrafo extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmGrafo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmPresentacionGrafos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmGrafo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmPresentacionGrafos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmGrafo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmPresentacionGrafos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmGrafo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmPresentacionGrafos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FrmGrafo dialog = new FrmGrafo(new javax.swing.JFrame(), true);
+                frmPresentacionGrafos dialog = new frmPresentacionGrafos(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
