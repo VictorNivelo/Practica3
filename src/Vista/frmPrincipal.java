@@ -490,7 +490,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                     try {
 //                        if (!grafoDirigiodoEtiquetado.existeArista(i,i)) {
 //                            if (!grafoDirigiodoEtiquetado.existeArista(j,j)) {
-                            grafoDirigiodoEtiquetado.insertarAristaE(local1.getNombreLocal(), local2.getNombreLocal(), Double.parseDouble(local1.getDistancia()));
+                            grafoDirigiodoEtiquetado.insertarAristaE(local1.getNombreLocal(), local2.getNombreLocal(), Double.valueOf(local1.getDistancia()));
 //                        }}
 //                        grafoDirigiodoEtiquetado.insertarAristaE(local1.getNombreLocal(), local2.getNombreLocal(), Double.parseDouble(local1.getDistancia()));
                     } 
