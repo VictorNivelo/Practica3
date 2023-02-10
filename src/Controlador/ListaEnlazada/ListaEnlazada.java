@@ -8,6 +8,7 @@ import Controlador.ListaEnlazada.Excepciones.AtributoException;
 import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
 import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.Utilidades.Utilidades;
+import com.sun.source.tree.BreakTree;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -559,6 +560,40 @@ public class ListaEnlazada<E> {
             aux = aux.getSiguiente();
         }
         System.out.println("\n------------------------------------------------------------------");
+//        System.out.println("\n");
+    }
+    
+    public void imprimirDijstra() {
+//        System.out.println("------------------------- LISTA DIJSTRA -------------------------");
+        NodoLista<E> aux = cabecera;
+        while (aux != null) {
+            System.out.print(aux.getDato().toString() + "  ");
+            aux = aux.getSiguiente();
+        }
+        
+//        System.out.println("\n------------------------------------------------------------------");
+        System.out.println("\n");
+    }
+    
+    public void imprimirBPA() {
+        System.out.println("------------------------- RECORRIDO EN ANCHURA -------------------------");
+        NodoLista<E> aux = cabecera;
+        while (aux != null) {
+            System.out.print(aux.getDato().toString() + "  ");
+            aux = aux.getSiguiente();
+        }
+        System.out.println("\n-----------------------------------------------------------------------");
+//        System.out.println("\n");
+    }
+    
+    public void imprimirBPP() {
+        System.out.println("------------------------- RECORRIDO EN PROFUNDIDAD -------------------------");
+        NodoLista<E> aux = cabecera;
+        while (aux != null) {
+            System.out.print(aux.getDato().toString() + "  ");
+            aux = aux.getSiguiente();
+        }
+        System.out.println("\n---------------------------------------------------------------------------");
 //        System.out.println("\n");
     }
 

@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -171,6 +172,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         btnMostrarGrafos = new javax.swing.JButton();
         btnBotonBusquedaAnchura = new javax.swing.JButton();
         btnBusquedaEnProfundidad = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txaPresentarResultados = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -306,7 +309,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -327,6 +330,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
 
         btnRecorridoDijstra.setText("RECORRIDO DIJKSTRA");
+        btnRecorridoDijstra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecorridoDijstraActionPerformed(evt);
+            }
+        });
 
         btnRecorridoFloyd.setText("RECORRIDO FLOYD");
         btnRecorridoFloyd.addActionListener(new java.awt.event.ActionListener() {
@@ -343,6 +351,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
 
         btnBotonBusquedaAnchura.setText("BPA");
+        btnBotonBusquedaAnchura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBotonBusquedaAnchuraActionPerformed(evt);
+            }
+        });
 
         btnBusquedaEnProfundidad.setText("BPP");
         btnBusquedaEnProfundidad.addActionListener(new java.awt.event.ActionListener() {
@@ -350,6 +363,12 @@ public class frmPrincipal extends javax.swing.JFrame {
                 btnBusquedaEnProfundidadActionPerformed(evt);
             }
         });
+
+        txaPresentarResultados.setEditable(false);
+        txaPresentarResultados.setColumns(20);
+        txaPresentarResultados.setRows(5);
+        txaPresentarResultados.setFocusable(false);
+        jScrollPane2.setViewportView(txaPresentarResultados);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -369,7 +388,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(0, 158, Short.MAX_VALUE)
                                 .addComponent(btnBusquedaEnProfundidad)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBotonBusquedaAnchura)
@@ -377,7 +396,10 @@ public class frmPrincipal extends javax.swing.JFrame {
                                 .addComponent(btnRecorridoFloyd)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnRecorridoDijstra))
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -388,7 +410,8 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalir)
@@ -483,23 +506,30 @@ public class frmPrincipal extends javax.swing.JFrame {
                 grafoDirigiodoEtiquetado.etiquetarVertice(i+1, listaLocalGuardada.getNombreLocal());
             }
             
-            for (int i = 0; i < ListaLocalesGuardados.size() - 1; i++) {
-                Locales local1 = ListaLocalesGuardados.get(i);
-                for (int j = i + 1; j < ListaLocalesGuardados.size(); j++) {
-                    Locales local2 = ListaLocalesGuardados.get(j);
-                    try {
-//                        if (!grafoDirigiodoEtiquetado.existeArista(i,i)) {
+            for (int i = 1; i < ListaLocalesGuardados.size(); i++) {
+                Locales localDistancia = ListaLocalesGuardados.get(i-1);
+//                Locales localAuxiliar1 = ListaLocalesGuardados.get(i);
+                try {
+//                    for(int j = 1; i< ListaLocalesGuardados.size();j++){
+                        if (!grafoDirigiodoEtiquetado.existeArista(i,i)) {
 //                            if (!grafoDirigiodoEtiquetado.existeArista(j,j)) {
-                            grafoDirigiodoEtiquetado.insertarAristaE(local1.getNombreLocal(), local2.getNombreLocal(), Double.valueOf(local1.getDistancia()));
-//                        }}
+                            grafoDirigiodoEtiquetado.insertarAristaE(grafoDirigiodoEtiquetado.obtenerEtiqueta(i), grafoDirigiodoEtiquetado.obtenerEtiqueta(i+1), Double.valueOf(localDistancia.getDistancia()));
+                        }
+//                    }
 //                        grafoDirigiodoEtiquetado.insertarAristaE(local1.getNombreLocal(), local2.getNombreLocal(), Double.parseDouble(local1.getDistancia()));
                     } 
                     catch (Exception e) {
                         
                     }
-                    
-                }
+//                for (int j = i+1; j < ListaLocalesGuardados.size(); j++) {
+////                    Locales localAuxiliar2 = ListaLocalesGuardados.get(j);
+//
+//                }
             }
+            
+            
+            
+            
             
 //            for (int i = 0; i < ListaLocalesGuardados.size(); i++) {
 //                Locales local1 = ListaLocalesGuardados.get(i);
@@ -556,9 +586,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         } 
         catch (FileNotFoundException e) {
 
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
+        
+        
         
 //        GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(7, String.class);
 
@@ -601,13 +633,106 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void btnRecorridoFloydActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecorridoFloydActionPerformed
         // TODO add your handling code here:
-        
+        try {
+            Gson gson = new Gson();
+            FileReader reader = new FileReader("ListaLocales.json");
+            
+            LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
+
+//            for (Locales local : ListaLocalesGuardados) {
+//                System.out.println(local.getNombreLocal() + " " + local.getDescripcion());
+//            }
+            GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(ListaLocalesGuardados.size(), String.class);
+            grafoDirigiodoEtiquetado.Floyd();
+            
+            
+        }
+        catch(FileNotFoundException e){
+            
+        } 
+        catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRecorridoFloydActionPerformed
 
     private void btnBusquedaEnProfundidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusquedaEnProfundidadActionPerformed
         // TODO add your handling code here:
-        
+        try {
+            Gson gson = new Gson();
+            FileReader reader = new FileReader("ListaLocales.json");
+            
+            LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
+
+//            for (Locales local : ListaLocalesGuardados) {
+//                System.out.println(local.getNombreLocal() + " " + local.getDescripcion());
+//            }
+            GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(ListaLocalesGuardados.size(), String.class);
+            int BusquedaNodo = Integer.parseInt(JOptionPane.showInputDialog("INGRESE EL NODO A BUSCAR"));
+
+            grafoDirigiodoEtiquetado.BPA(BusquedaNodo).imprimirBPP();
+            
+            txaPresentarResultados.setText(""+Arrays.toString(grafoDirigiodoEtiquetado.BPA(BusquedaNodo).toArray()));
+            
+        }
+        catch(FileNotFoundException e){
+            
+        } 
+        catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnBusquedaEnProfundidadActionPerformed
+
+    private void btnRecorridoDijstraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecorridoDijstraActionPerformed
+        // TODO add your handling code here:
+        try {
+            Gson gson = new Gson();
+            FileReader reader = new FileReader("ListaLocales.json");
+            
+            LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
+
+//            for (Locales local : ListaLocalesGuardados) {
+//                System.out.println(local.getNombreLocal() + " " + local.getDescripcion());
+//            }
+            GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(ListaLocalesGuardados.size(), String.class);
+            System.out.println("--------------------- RECORRIDO DIJSTRA ---------------------");
+            for(int i = 1; i<ListaLocalesGuardados.size()+1; i++){
+                grafoDirigiodoEtiquetado.Dijkstra(i).imprimirDijstra();
+                txaPresentarResultados.setText(""+Arrays.toString(grafoDirigiodoEtiquetado.Dijkstra(i).toArray()));
+                
+            }
+            System.out.println("-------------------------------------------------------------");
+            
+            
+        }catch(FileNotFoundException e){
+            
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRecorridoDijstraActionPerformed
+
+    private void btnBotonBusquedaAnchuraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBotonBusquedaAnchuraActionPerformed
+        // TODO add your handling code here:
+        try {
+            Gson gson = new Gson();
+            FileReader reader = new FileReader("ListaLocales.json");
+            
+            LinkedList<Locales> ListaLocalesGuardados = gson.fromJson(reader, new TypeToken<LinkedList<Locales>>() {}.getType());
+
+//            for (Locales local : ListaLocalesGuardados) {
+//                System.out.println(local.getNombreLocal() + " " + local.getDescripcion());
+//            }
+            GrafoNoDirigidoEtiquetado grafoDirigiodoEtiquetado = new GrafoNoDirigidoEtiquetado(ListaLocalesGuardados.size(), String.class);
+            int BusquedaNodo = Integer.parseInt(JOptionPane.showInputDialog("INGRESE EL NODO A BUSCAR"));
+            grafoDirigiodoEtiquetado.BPA(BusquedaNodo).imprimirBPA();
+            txaPresentarResultados.setText(""+Arrays.toString(grafoDirigiodoEtiquetado.BPA(BusquedaNodo).toArray()));
+            
+        }catch(FileNotFoundException e){
+            
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnBotonBusquedaAnchuraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -664,7 +789,9 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable tblListaLocales;
+    private javax.swing.JTextArea txaPresentarResultados;
     public static javax.swing.JTextField txtDescripcionLocal;
     public static javax.swing.JTextField txtNombreLocal;
     public static javax.swing.JTextField txtPosicion;

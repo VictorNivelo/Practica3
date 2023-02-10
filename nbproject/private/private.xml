@@ -5,7 +5,11 @@
         <group>
             <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Vista/frmModificarLocal.java</file>
             <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Vista/frmPrincipal.java</file>
+            <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Controlador/Grafo/GrafoNoDirigidoEtiquetado.java</file>
             <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Vista/frmPresentacionGrafos.java</file>
+            <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Controlador/Grafo/Grafo.java</file>
+            <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Controlador/ListaEnlazada/ListaEnlazada.java</file>
+            <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Controlador/Pilas/Pilas.java</file>
             <file>file:/C:/Users/Victor/Documents/NetBeansProjects/Practica3/src/Vista/frmAgregarLocal.java</file>
         </group>
     </open-files>

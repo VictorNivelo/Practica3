@@ -8,6 +8,7 @@ import Controlador.Colas.Colas;
 import Controlador.ListaEnlazada.Excepciones.ListaVaciaExcepcion;
 import Controlador.ListaEnlazada.Excepciones.PosicionNoEncontradaException;
 import Controlador.ListaEnlazada.ListaEnlazada;
+import Controlador.Pilas.Pilas;
 /**
  *
  * @author Victor
@@ -170,64 +171,28 @@ public abstract class Grafo {
         return matriz;
     }
     
-    public ListaEnlazada Dijkstra(Integer origen) throws Exception {
+    private Integer IndicardorMenor(Integer NumeroV, Boolean[] ValidadorBandera, Double[] DistanciaRecorrida) {
         
-        origen = origen -1;
-        ListaEnlazada caminoDijkstra = new ListaEnlazada();
-        Integer Origen = origen;
-        Integer NumeroDeVertices = this.numVertices();
-        
-        Double[] AuxiliarDouble = new Double[NumeroDeVertices];
-        Boolean[] Marca = new Boolean[NumeroDeVertices];
-        Integer[] Ultimo = new Integer[NumeroDeVertices];
-        Double[][] MatrizPesos = pesosGrafo(this);
-        
-        Marca[Origen] = true;
-        AuxiliarDouble[Origen] = 0.0;
-
-        for (int i = 0; i < NumeroDeVertices; i++) {
-            Marca[i] = false;
-            AuxiliarDouble[i] = MatrizPesos[Origen][i];
-            Ultimo[i] = Origen;
-        }
-
-        for (int i = 0; i < NumeroDeVertices; i++) {
-            Integer v = minimo(NumeroDeVertices, Marca, AuxiliarDouble);
-            Marca[v] = true;
-            
-            for (int w = 0; w < NumeroDeVertices; w++) {
-                if (!Marca[w] && ((AuxiliarDouble[v] + MatrizPesos[v][w]) < AuxiliarDouble[w])) {
-                    AuxiliarDouble[w] = AuxiliarDouble[v] + MatrizPesos[v][w];
-                    Ultimo[w] = v;
-                }
-            }
-            caminoDijkstra.insertar(AuxiliarDouble[i]);
-        }
-        return caminoDijkstra;
-    }
-
-    private Integer minimo(Integer n, Boolean[] F, Double[] D) {
-        
-        Double mx = 1000000000.0;
+        Double maximo = 1000000000.0;
         Integer v = 1;
         
-        for (int j = 0; j < n; j++) {
-            if (!F[j] && (D[j] <= mx)) {
-                mx = D[j];
-                v = j;
+        for (int i = 0; i < NumeroV; i++) {
+            if (!ValidadorBandera[i] && (DistanciaRecorrida[i] <= maximo)) {
+                maximo = DistanciaRecorrida[i];
+                v = i;
             }
         }
         return v;
     }
-
-    private Double[][] pesosGrafo(Grafo grafo) throws Exception {
+    
+    private Double[][] CalcularPesoGrafo(Grafo grafo) throws Exception {
         
         Integer vertices = grafo.numVertices();
         Double[][] matriz = new Double[vertices][vertices];
         
         for (int i = 0; i < vertices; i++) {
             for (int j = 0; j < vertices; j++) {
-                Double peso = grafo.pesoArista(i + 1, j + 1);
+                Double peso = grafo.pesoArista(i, j );
                 if(peso != 0){
                     matriz[i][j] = peso;
                 }
@@ -238,12 +203,48 @@ public abstract class Grafo {
         }
         return matriz;
     }
+    
+    public ListaEnlazada Dijkstra(Integer origen) throws Exception {
+        
+        origen = origen -1;
+        ListaEnlazada ListaCaminosDijkstra = new ListaEnlazada();
+        Integer inicio = origen;
+        Integer NumeroDeVertices = this.numVertices();
+        
+        Double[] AuxiliarDouble = new Double[NumeroDeVertices];
+        Boolean[] Marca = new Boolean[NumeroDeVertices];
+        Integer[] Ultimo = new Integer[NumeroDeVertices];
+        Double[][] MatrizPesos = CalcularPesoGrafo(this);
+        
+        for (int i = 0; i < NumeroDeVertices; i++) {
+            AuxiliarDouble[i] = MatrizPesos[inicio][i];
+            Ultimo[i] = inicio;
+            Marca[i] = false;
+        }
+        
+        Marca[inicio] = true;
+        AuxiliarDouble[inicio] = 0.0;
+
+        for (int i = 0; i < NumeroDeVertices; i++) {
+            Integer verticesN = IndicardorMenor(NumeroDeVertices, Marca, AuxiliarDouble);
+            Marca[verticesN] = true;
+            
+            for (int j = 0; j < NumeroDeVertices; j++) {
+                if (!Marca[j] && ((AuxiliarDouble[verticesN] + MatrizPesos[verticesN][j]) < AuxiliarDouble[j])) {
+                    AuxiliarDouble[j] = AuxiliarDouble[verticesN] + MatrizPesos[verticesN][j];
+                    Ultimo[j] = verticesN;
+                }
+            }
+            ListaCaminosDijkstra.insertar(AuxiliarDouble[i]);
+        }
+        return ListaCaminosDijkstra;
+    }
 
     public void Floyd() throws Exception {
         
         ListaEnlazada ListaFloyd = new ListaEnlazada();
         
-        Double[][] Pesos = pesosGrafo(this);
+        Double[][] Pesos = CalcularPesoGrafo(this);
         Integer NumeroVertices = this.numVertices();
         Integer[][] TrazarRuta = new Integer[NumeroVertices][NumeroVertices];
         Double[][] AuxiliarDouble = new Double[NumeroVertices][NumeroVertices];
@@ -256,7 +257,7 @@ public abstract class Grafo {
         }
         
         for (int i = 0; i < NumeroVertices; i++) {
-            AuxiliarDouble[i][i] = 0.0;
+            AuxiliarDouble[i][i] = 1.0;
         }
         
         for (int k = 0; k < NumeroVertices; k++) {
@@ -270,7 +271,13 @@ public abstract class Grafo {
             }
         }
         
-        System.out.println("\t1\t2\t3\t4\t5\t6");
+        //imprimir la secuencia de la matriz
+        System.out.println("---------------------------- Matriz Adyacencia ----------------------------");
+        for(int i = 1; i <=NumeroVertices; i++){
+            System.out.print("\t"+i);
+        }
+        System.out.print("\n");
+//        System.out.println("\t1\t2\t3\t4\t5");
         
         for(int i = 0; i < NumeroVertices; i++){
             System.out.print(i+1+"\t");
@@ -279,6 +286,7 @@ public abstract class Grafo {
             }
             System.out.println("\n");
         }
+        System.out.println("----------------------------------------------------------------------------");
     }
     
     public ListaEnlazada BPP(Integer nodo) throws Exception{
@@ -294,7 +302,23 @@ public abstract class Grafo {
         }
         
         Visitados[nodo] = true;
-//        Pilas pila = new Pilas();
+        Pilas pila = new Pilas();
+        pila.push(nodo);
+        
+        while (!pila.estaVacia()) {
+            Integer j = (Integer) pila.pop();
+            Recorrido.insertar(j+1);
+            ListaEnlazada<Adyacencia> lista = adyacentes(j+1);
+            
+            for(int i = 0; i < lista.getSize(); i++){
+                Adyacencia ck = lista.obtener(i);
+                Integer k = ck.getDestino()-1;
+                if(!Visitados[k]){
+                    pila.push(k);
+                    Visitados[k] = true;
+                }
+            }
+        }
         
         return Recorrido;
     }
